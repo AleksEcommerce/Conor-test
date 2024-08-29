@@ -2,17 +2,17 @@
   {% if section.settings.pendant_image %}
       <img src="{{ section.settings.pendant_image | image_url: width: 1200 }}" alt="Pendant">
       <div class="b-charms_list m-two">
-        <div class="b-charms_list--item m-first">
-          <img src="https://placehold.co/50x80" class="b-charms_list--item_img m-first" />
+        <div class="b-charms_list--item m-first hidden">
+          <img id="img-1" src="https://placehold.co/50x80" class="b-charms_list--item_img m-first m-1" />
         </div>
-        <div class="b-charms_list--item m-second">
-          <img src="https://placehold.co/50x70" class="b-charms_list--item_img m-second" />
+        <div class="b-charms_list--item m-second hidden">
+          <img id="img-2" src="https://placehold.co/50x70" class="b-charms_list--item_img m-second m-2" />
         </div>
-        <div class="b-charms_list--item m-third">
-          <img src="https://placehold.co/50x70" class="b-charms_list--item_img m-third" />
+        <div class="b-charms_list--item m-third hidden">
+          <img id="img-3" src="https://placehold.co/50x70" class="b-charms_list--item_img m-third m-3" />
         </div>
-        <div class="b-charms_list--item m-fourth">
-          <img src="https://placehold.co/50x70" class="b-charms_list--item_img m-fourth" />
+        <div class="b-charms_list--item m-fourth hidden">
+          <img id="img-4" src="https://placehold.co/50x70" class="b-charms_list--item_img m-fourth m-4" />
         </div>
         {% comment %} {% for block in section.blocks %}
           {% if block.type == 'charm' and block.settings.charm_image %}
@@ -37,6 +37,10 @@
 </div>
 
 <style>
+  .h-hidden {
+    display: none;
+  }
+
   #pendant-builder-container {
     width: 600px;
     margin: 0 auto;  
@@ -65,12 +69,18 @@
     }
   }
 
+  .charm-list {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
   .b-charms_list {
     display: flex;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    bottom: 38%;
+    bottom: 40%;
     width: 200px;
     justify-content: center;
   }
@@ -98,12 +108,12 @@
 
   {% comment %} Animation {% endcomment %}
    
-  .b-charms_list.m-two .m-first {
+  .b-charms_list.m-2 .m-first {
     transform: translateY(-2px) rotate(5deg);
     right: 50%;
   }
 
-  .b-charms_list.m-two .m-second {
+  .b-charms_list.m-2 .m-second {
     transform: translateY(-2px) rotate(-5deg);
     left: 50%;
   }
@@ -113,35 +123,69 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const pendantContainer = document.getElementById('pendant-builder-container');
-
-    // Обработчик кликов по чекбоксам
-    document.querySelectorAll('.charm-checkbox').forEach(function(checkbox, index) {
+    const charmsList = document.querySelector('.b-charms_list');
+    const maxCharms = 4;
+    const charmItems = Array.from(document.querySelectorAll('.b-charms_list--item'));
+    const charmImages = Array.from(document.querySelectorAll('.b-charms_list--item_img'));
+    const checkboxes = Array.from(document.querySelectorAll('.charm-checkbox'));
+    let counter = 0; // Счетчик для отслеживания заполненных слотов
+  
+    checkboxes.forEach((checkbox) => {
       const charmImageSrc = checkbox.getAttribute('data-charm');
-
-      // Создаем элементы для кулонов и добавляем в контейнер подвески
-      const charmElement = document.createElement('img');
-      charmElement.src = charmImageSrc;
-      charmElement.className = 'charm';
-      charmElement.style.position = 'absolute';
-      charmElement.style.bottom = `${index * 60}px`; // Позиционирование кулона
-      charmElement.style.left = '50%';
-      charmElement.style.transform = 'translateX(-50%)';
-      charmElement.style.width = '50px';
-      charmElement.style.height = '50px';
-      charmElement.style.display = 'none';
-      charmElement.setAttribute('data-index', index);
-      pendantContainer.appendChild(charmElement);
-
-      // Управление видимостью кулона по чекбоксу
+  
       checkbox.addEventListener('change', function() {
         if (this.checked) {
-          charmElement.style.display = 'block';
+          if (counter < maxCharms) {
+            // Заполняем слоты последовательно с помощью счетчика
+            charmImages[counter].src = charmImageSrc;
+            const parentItem = charmImages[counter].closest('.b-charms_list--item');
+            parentItem.classList.remove('hidden'); // Убираем класс hidden
+            counter++; // Увеличиваем счетчик после заполнения слота
+          }
         } else {
-          charmElement.style.display = 'none';
+          // Находим и очищаем соответствующий слот при снятии чекбокса
+          const imgToRemove = charmImages.find(img => img.getAttribute('src') === charmImageSrc);
+          if (imgToRemove) {
+            imgToRemove.src = ''; // Очищаем src, чтобы освободить слот
+            const parentItem = imgToRemove.closest('.b-charms_list--item');
+            parentItem.classList.add('hidden'); // Добавляем класс hidden
+            counter--; // Уменьшаем счетчик при очистке слота
+          }
         }
+  
+        // Обновить классы на .b-charms_list в зависимости от количества выбранных
+        updateCharmListClass();
+  
+        // Проверка на достижение максимума
+        checkMaxCharms();
       });
     });
+  
+    function updateCharmListClass() {
+      const selectedCharms = checkboxes.filter(checkbox => checkbox.checked).length;
+      charmsList.className = 'b-charms_list'; // Сбросить классы
+  
+      if (selectedCharms > 0 && selectedCharms <= maxCharms) {
+        charmsList.classList.add(`m-${selectedCharms}`); // Добавляем класс в зависимости от количества активных чекбоксов
+      }
+    }
+  
+    function checkMaxCharms() {
+      // Если достигнут максимум, отключаем все неактивные чекбоксы
+      if (counter >= maxCharms) {
+        checkboxes.forEach(checkbox => {
+          if (!checkbox.checked) {
+            checkbox.disabled = true; // Отключаем неактивные чекбоксы
+          }
+        });
+      } else {
+        // Если меньше максимума, убеждаемся, что чекбоксы активны
+        checkboxes.forEach(checkbox => checkbox.disabled = false);
+      }
+    }
   });
+  
+  
 </script>
 
 {% schema %}
