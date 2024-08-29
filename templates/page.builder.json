@@ -1,0 +1,22 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "builder_section_YAWJa7": {
+      "type": "builder-section",
+      "settings": {
+        "pendant_image": "shopify:\/\/shop_images\/103-0280_color_polishedgold_01_1600x_d551a3b9-d58b-4b2d-a898-8f531c4908e2.jpg"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "builder_section_YAWJa7"
+  ]
+}

@@ -1,0 +1,132 @@
+
+<script src="https://unpkg.com/konva@9/konva.min.js"></script>
+
+<div id="pendant-builder-container" style="width: 500px; height: 500px; margin: 0 auto; border: 1px solid #ddd;"></div>
+
+<div class="pendant-list">
+  {% for i in (1..5) %}
+    {% capture charm_key %}charm_{{ i }}{% endcapture %}
+    {% assign charm = section.settings[charm_key] %}
+    {% if charm != blank %}
+      <img src="{{ charm | image_url: width: 50, height: 50 }}" class="pendant-item" alt="Charm {{ i }}" data-charm="{{ charm | image_url }}" style="cursor: pointer; margin-right: 10px;" width="50" height="50">
+    {% else %}
+      <script>console.log('Charm {{ i }} not found or not set');</script>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Создание сцены и слоя
+    var stage = new Konva.Stage({
+      container: 'pendant-builder-container',
+      width: 500,
+      height: 500
+    });
+
+    var layer = new Konva.Layer();
+    stage.add(layer);
+
+    // Добавление подвески на сцену
+    var pendantImage = new Image();
+    pendantImage.src = "{{ section.settings.pendant_image | image_url: width: 500, height: 500 }}";
+    pendantImage.onload = function() {
+      var pendant = new Konva.Image({
+        x: stage.width() / 2 - pendantImage.width / 2,
+        y: 0,
+        image: pendantImage,
+        draggable: false
+      });
+      layer.add(pendant);
+      layer.draw();
+    };
+
+    var charms = []; // Массив для хранения кулонов
+
+    // Функция для добавления кулона
+    function addCharm(src) {
+      if (charms.length >= 4) return; // Ограничение до 4 кулонов
+
+      var charmImage = new Image();
+      charmImage.src = src;
+      console.log(charmImage, charmImage.src);
+      charmImage.onload = function() {
+        var charm = new Konva.Image({
+          x: stage.width() / 2 - charmImage.width / 2,
+          y: 200 + charms.length * 30, // Расположение кулона
+          image: charmImage,
+          draggable: true
+        });
+
+        charm.on('dragmove', function() {
+          // Ограничения на перемещение кулона внутри сцены, если нужно
+        });
+
+        charm.on('dblclick', function() {
+          charm.destroy();
+          layer.draw();
+          charms = charms.filter(c => c !== charm); // Удаление из массива
+        });
+
+        layer.add(charm);
+        charm.moveToTop(); // Каждый новый кулон выше предыдущего
+        layer.draw();
+
+        charms.push(charm);
+      };
+    }
+
+    // Событие клика на кулон в списке
+    document.querySelectorAll('.pendant-item').forEach(function(item) {
+      item.addEventListener('click', function() {
+        
+        var charmSrc = this.getAttribute('data-charm');
+        console.log(charmSrc, 'charmSrc');
+        addCharm(charmSrc);
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Pendant Builder",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "pendant_image",
+      "label": "Pendant Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "charm_1",
+      "label": "Charm 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "charm_2",
+      "label": "Charm 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "charm_3",
+      "label": "Charm 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "charm_4",
+      "label": "Charm 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "charm_5",
+      "label": "Charm 5"
+    }
+  ],
+    "presets": [
+        {
+            "name": "Pendant Builder"
+        }
+    ]
+}
+{% endschema %}
