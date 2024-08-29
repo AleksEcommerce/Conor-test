@@ -1,0 +1,178 @@
+<div id="pendant-builder-container">
+  {% if section.settings.pendant_image %}
+      <img src="{{ section.settings.pendant_image | image_url: width: 1200 }}" alt="Pendant">
+      <div class="b-charms_list m-two">
+        <div class="b-charms_list--item m-first">
+          <img src="https://placehold.co/50x80" class="b-charms_list--item_img m-first" />
+        </div>
+        <div class="b-charms_list--item m-second">
+          <img src="https://placehold.co/50x70" class="b-charms_list--item_img m-second" />
+        </div>
+        <div class="b-charms_list--item m-third">
+          <img src="https://placehold.co/50x70" class="b-charms_list--item_img m-third" />
+        </div>
+        <div class="b-charms_list--item m-fourth">
+          <img src="https://placehold.co/50x70" class="b-charms_list--item_img m-fourth" />
+        </div>
+        {% comment %} {% for block in section.blocks %}
+          {% if block.type == 'charm' and block.settings.charm_image %}
+            <div class="b-charms_list--item">
+              <img src="{{ block.settings.charm_image | image_url }}" alt="Charm" width="50" height="50">
+            </div>
+          {% endif %}
+        {% endfor %} {% endcomment %}
+      </div>
+  {% endif %}
+</div>
+
+<div class="charm-list">
+  {% for block in section.blocks %}
+    {% if block.type == 'charm' and block.settings.charm_image %}
+      <div class="charm-item">
+        <img src="{{ block.settings.charm_image | image_url }}" alt="Charm" width="50" height="50">
+        <input type="checkbox" class="charm-checkbox" data-charm="{{ block.settings.charm_image | image_url }}">
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<style>
+  #pendant-builder-container {
+    width: 600px;
+    margin: 0 auto;  
+    overflow: hidden;
+    position: relative;
+  }
+
+  #pendant-builder-container > img {
+    {% comment %} position: absolute; {% endcomment %}
+    width: 100%;
+    margin-top: -50%;
+    {% comment %} height: 100%; {% endcomment %}
+    {% comment %} min-width: 600px; {% endcomment %}
+    object-fit: cover;
+    object-position: bottom;
+  }
+
+  @media screen and (max-width: 767px) {
+    #pendant-builder-container {
+      width: 350px;
+    }
+
+    #pendant-builder-container > img {
+      width: 600px;
+      margin-top: -70%;
+    }
+  }
+
+  .b-charms_list {
+    display: flex;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 38%;
+    width: 200px;
+    justify-content: center;
+  }
+
+  .b-charms_list--item {
+    position: absolute;
+    {% comment %} width: 50px; {% endcomment %}
+     transition: all 0.3s ease;
+  }
+
+  .b-charms_list--item > img {
+    {% comment %} position: absolute;
+    left: 0;
+    top: 0; {% endcomment %}
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .b-charms_list--item_img {
+
+  }
+
+
+  {% comment %} Animation {% endcomment %}
+   
+  .b-charms_list.m-two .m-first {
+    transform: translateY(-2px) rotate(5deg);
+    right: 50%;
+  }
+
+  .b-charms_list.m-two .m-second {
+    transform: translateY(-2px) rotate(-5deg);
+    left: 50%;
+  }
+  
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const pendantContainer = document.getElementById('pendant-builder-container');
+
+    // Обработчик кликов по чекбоксам
+    document.querySelectorAll('.charm-checkbox').forEach(function(checkbox, index) {
+      const charmImageSrc = checkbox.getAttribute('data-charm');
+
+      // Создаем элементы для кулонов и добавляем в контейнер подвески
+      const charmElement = document.createElement('img');
+      charmElement.src = charmImageSrc;
+      charmElement.className = 'charm';
+      charmElement.style.position = 'absolute';
+      charmElement.style.bottom = `${index * 60}px`; // Позиционирование кулона
+      charmElement.style.left = '50%';
+      charmElement.style.transform = 'translateX(-50%)';
+      charmElement.style.width = '50px';
+      charmElement.style.height = '50px';
+      charmElement.style.display = 'none';
+      charmElement.setAttribute('data-index', index);
+      pendantContainer.appendChild(charmElement);
+
+      // Управление видимостью кулона по чекбоксу
+      checkbox.addEventListener('change', function() {
+        if (this.checked) {
+          charmElement.style.display = 'block';
+        } else {
+          charmElement.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Pendant Builder 2",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "pendant_image",
+      "label": "Pendant Image",
+      "info": "Upload the base pendant image."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "charm",
+      "name": "Charm",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "charm_image",
+          "label": "Charm Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pendant Builder 2",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
