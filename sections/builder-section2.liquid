@@ -1,27 +1,7 @@
 <div id="pendant-builder-container">
   {% if section.settings.pendant_image %}
       <img src="{{ section.settings.pendant_image | image_url: width: 1200 }}" alt="Pendant">
-      <div class="b-charms_list m-two">
-        <div class="b-charms_list--item m-first hidden">
-          <img id="img-1" src="https://placehold.co/50x80" class="b-charms_list--item_img m-1" />
-        </div>
-        <div class="b-charms_list--item m-second hidden">
-          <img id="img-2" src="https://placehold.co/50x70" class="b-charms_list--item_img m-2" />
-        </div>
-        <div class="b-charms_list--item m-third hidden">
-          <img id="img-3" src="https://placehold.co/50x70" class="b-charms_list--item_img m-3" />
-        </div>
-        <div class="b-charms_list--item m-fourth hidden">
-          <img id="img-4" src="https://placehold.co/50x70" class="b-charms_list--item_img m-4" />
-        </div>
-        {% comment %} {% for block in section.blocks %}
-          {% if block.type == 'charm' and block.settings.charm_image %}
-            <div class="b-charms_list--item">
-              <img src="{{ block.settings.charm_image | image_url }}" alt="Charm" width="50" height="50">
-            </div>
-          {% endif %}
-        {% endfor %} {% endcomment %}
-      </div>
+      <div class="b-charms_list"></div>
   {% endif %}
 </div>
 
@@ -83,42 +63,98 @@
     bottom: 40%;
     width: 200px;
     justify-content: center;
+    transition: all 0.3s ease;
   }
 
   .b-charms_list--item {
     position: absolute;
     {% comment %} width: 50px; {% endcomment %}
-     transition: all 0.3s ease;
+    width: 25%;
+    transition: all 0.3s ease;
+    {% comment %} position: relative; {% endcomment %}
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .b-charms_list--item.m-showed {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .b-charms_list--item.m-showed > img {
+    transform: translateX(-50%) translateY(0);
   }
 
   .b-charms_list--item > img {
-    {% comment %} position: absolute;
-    left: 0;
-    top: 0; {% endcomment %}
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    top: 0;
     display: block;
-    width: 100%;
-    height: 100%;
     object-fit: contain;
+    transition: all 0.3s ease;
+    max-width: 150%;
+  }
+
+  .b-charms_list--item {
   }
 
   .b-charms_list--item_img {
 
   }
 
-
-  {% comment %} Animation {% endcomment %}
-  .b-charms_list.m-1 .b-charms_list--item {
+  {% comment %} For one {% endcomment %}
+  .b-charms_list .b-charms_list--item:nth-child(1),
+  .b-charms_list.m-1 .b-charms_list--item:nth-child(1) {
     transform: translateY(0) translateX(-50%) rotate(0);
     left: 50%;
   }
-   
-  .b-charms_list.m-2 .m-first {
-    transform: translateY(-2px) rotate(5deg);
+
+     {% comment %} For two {% endcomment %}
+  .b-charms_list.m-2 .b-charms_list--item:nth-child(1) {
+    transform: translateY(-2px) translateX(-90%) rotate(1deg);
     left: 50%;
   }
 
-  .b-charms_list.m-2 .m-second {
-    transform: translateY(-2px) rotate(-5deg);
+  .b-charms_list.m-2 .b-charms_list--item:nth-child(2) {
+    transform: translateY(-2px) translateX(-30%) rotate(-1deg);
+    left: 50%;
+  }
+
+ {% comment %} For Three {% endcomment %}
+  .b-charms_list.m-3 .b-charms_list--item:nth-child(1) {
+    transform: translateY(-8px) translateX(-120%) rotate(6deg);
+    left: 50%;
+  }
+
+  .b-charms_list.m-3 .b-charms_list--item:nth-child(2) {
+    transform: translateY(-2px) translateX(-50%) rotate(0);
+    left: 50%;
+  }
+
+  .b-charms_list.m-3 .b-charms_list--item:nth-child(3) {
+    transform: translateY(-8px) translateX(10%) rotate(-6deg);
+    left: 50%;
+  }
+
+  {% comment %} For Fourth {% endcomment %}
+  .b-charms_list.m-4 .b-charms_list--item:nth-child(1) {
+    transform: translateY(-8px) translateX(-150%) rotate(6deg);
+    left: 50%;
+  }
+
+  .b-charms_list.m-4 .b-charms_list--item:nth-child(2) {
+    transform: translateY(-2px) translateX(-80%) rotate(2deg);
+    left: 50%;
+  }
+
+  .b-charms_list.m-4 .b-charms_list--item:nth-child(3) {
+    transform: translateY(-2px) translateX(0) rotate(-2deg);
+    left: 50%;
+  }
+
+  .b-charms_list.m-4 .b-charms_list--item:nth-child(4) {
+    transform: translateY(-8px) translateX(40%) rotate(-6deg);
     left: 50%;
   }
 
@@ -162,38 +198,48 @@
     const pendantContainer = document.getElementById('pendant-builder-container');
     const charmsList = document.querySelector('.b-charms_list');
     const maxCharms = 4;
-    const charmItems = Array.from(document.querySelectorAll('.b-charms_list--item'));
-    const charmImages = Array.from(document.querySelectorAll('.b-charms_list--item_img'));
     const checkboxes = Array.from(document.querySelectorAll('.charm-checkbox'));
     let counter = 0; // Счетчик для отслеживания заполненных слотов
   
-    checkboxes.forEach((checkbox) => {
-      const charmImageSrc = checkbox.getAttribute('data-charm');
+    checkboxes.forEach((checkbox, index) => {
+      const charmImageSrc = checkbox.getAttribute('data-charm').replace(/['"]+/g, ''); // Удаляем лишние кавычки
   
       checkbox.addEventListener('change', function() {
         if (this.checked) {
           if (counter < maxCharms) {
-            // Заполняем слоты последовательно с помощью счетчика
-            charmImages[counter].src = charmImageSrc;
-            const parentItem = charmImages[counter].closest('.b-charms_list--item');
-            parentItem.classList.remove('hidden'); // Убираем класс hidden
-            counter++; // Увеличиваем счетчик после заполнения слота
+            // Создаем новый элемент div для изображения
+            const newCharmItem = document.createElement('div');
+            newCharmItem.classList.add('b-charms_list--item', `m-${counter + 1}`);
+            setTimeout(() => {
+              newCharmItem.classList.add('m-showed');
+            }, 300);
+            
+            const newCharmImage = document.createElement('img');
+            newCharmImage.setAttribute('src', charmImageSrc); // Устанавливаем src без лишних кавычек
+            newCharmImage.classList.add('b-charms_list--item_img');
+  
+            // Добавляем изображение в новый div
+            newCharmItem.appendChild(newCharmImage);
+            charmsList.appendChild(newCharmItem); // Вставляем div в контейнер .b-charms_list
+            counter++; // Увеличиваем счетчик после добавления элемента
+            updateCharmListClass();
           }
         } else {
-          // Находим и очищаем соответствующий слот при снятии чекбокса
-          const imgToRemove = charmImages.find(img => img.getAttribute('src') === charmImageSrc);
-          if (imgToRemove) {
-            imgToRemove.src = ''; // Очищаем src, чтобы освободить слот
-            const parentItem = imgToRemove.closest('.b-charms_list--item');
-            parentItem.classList.add('hidden'); // Добавляем класс hidden
-            counter--; // Уменьшаем счетчик при очистке слота
+          // Удаляем соответствующий div при снятии чекбокса
+          const charmToRemove = charmsList.querySelector(`.b-charms_list--item_img[src="${charmImageSrc}"]`);
+          if (charmToRemove) {
+            const parentItem = charmToRemove.closest('.b-charms_list--item');
+            parentItem.classList.remove('m-showed');
+            counter--; // Уменьшаем счетчик перед удалением элемента
+            setTimeout(() => {
+              parentItem.remove();
+              updateCharmListClass();
+              checkMaxCharms(); // Обновляем доступность чекбоксов после удаления элемента
+            }, 300);
           }
         }
   
-        // Обновить классы на .b-charms_list в зависимости от количества выбранных
-        updateCharmListClass();
-  
-        // Проверка на достижение максимума
+        // Проверка на достижение максимума после изменения количества элементов
         checkMaxCharms();
       });
     });
@@ -221,8 +267,6 @@
       }
     }
   });
-  
-  
 </script>
 
 {% schema %}
