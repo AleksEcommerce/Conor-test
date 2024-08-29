@@ -3,16 +3,16 @@
       <img src="{{ section.settings.pendant_image | image_url: width: 1200 }}" alt="Pendant">
       <div class="b-charms_list m-two">
         <div class="b-charms_list--item m-first hidden">
-          <img id="img-1" src="https://placehold.co/50x80" class="b-charms_list--item_img m-first m-1" />
+          <img id="img-1" src="https://placehold.co/50x80" class="b-charms_list--item_img m-1" />
         </div>
         <div class="b-charms_list--item m-second hidden">
-          <img id="img-2" src="https://placehold.co/50x70" class="b-charms_list--item_img m-second m-2" />
+          <img id="img-2" src="https://placehold.co/50x70" class="b-charms_list--item_img m-2" />
         </div>
         <div class="b-charms_list--item m-third hidden">
-          <img id="img-3" src="https://placehold.co/50x70" class="b-charms_list--item_img m-third m-3" />
+          <img id="img-3" src="https://placehold.co/50x70" class="b-charms_list--item_img m-3" />
         </div>
         <div class="b-charms_list--item m-fourth hidden">
-          <img id="img-4" src="https://placehold.co/50x70" class="b-charms_list--item_img m-fourth m-4" />
+          <img id="img-4" src="https://placehold.co/50x70" class="b-charms_list--item_img m-4" />
         </div>
         {% comment %} {% for block in section.blocks %}
           {% if block.type == 'charm' and block.settings.charm_image %}
@@ -107,15 +107,52 @@
 
 
   {% comment %} Animation {% endcomment %}
+  .b-charms_list.m-1 .b-charms_list--item {
+    transform: translateY(0) translateX(-50%) rotate(0);
+    left: 50%;
+  }
    
   .b-charms_list.m-2 .m-first {
     transform: translateY(-2px) rotate(5deg);
-    right: 50%;
+    left: 50%;
   }
 
   .b-charms_list.m-2 .m-second {
     transform: translateY(-2px) rotate(-5deg);
     left: 50%;
+  }
+
+  @keyframes sway-right {
+    0% {
+      transform: translateY(0) translateX(0) rotate(0);
+    }
+    30% {
+      transform: translateY(-4px) translateX(60%) rotate(10deg); /* Уезжаем дальше */
+    }
+    60% {
+      transform: translateY(-2px) translateX(52%) rotate(5deg); /* Начинаем возвращаться */
+    }
+    100% {
+      transform: translateY(-2px) rotate(5deg); /* Конечная позиция */
+      right: 50%;
+    }
+  }
+  
+  /* Анимация для элементов, которые уезжают налево */
+  @keyframes sway-left {
+    0% {
+      transform: translateY(0) translateX(0) rotate(0);
+    }
+    30% {
+      transform: translateY(-4px) translateX(-60%) rotate(-10deg); /* Уезжаем дальше */
+    }
+    60% {
+      transform: translateY(-2px) translateX(-52%) rotate(-5deg); /* Начинаем возвращаться */
+    }
+    100% {
+      transform: translateY(-2px) rotate(-5deg); /* Конечная позиция */
+      left: 50%;
+    }
   }
   
 </style>
