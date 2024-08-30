@@ -1,3 +1,12 @@
+/*
+* ------------------------------------------------------------
+* IMPORTANT: The contents of this file are auto-generated.
+*
+* This file may be updated by the Shopify admin theme editor
+* or related systems. Please exercise caution as any changes
+* made to this file may be overwritten.
+* ------------------------------------------------------------
+*/
 {
   "sections": {
     "main": {
@@ -56,14 +65,70 @@
         "charm_LkQDHQ",
         "charm_LYCkBh"
       ],
+      "disabled": true,
       "settings": {
         "pendant_image": "shopify:\/\/shop_images\/103-0280_color_polishedgold_01_1600x_d551a3b9-d58b-4b2d-a898-8f531c4908e2.jpg"
+      }
+    },
+    "builder_section3_aNfgDW": {
+      "type": "builder-section3",
+      "blocks": {
+        "charm_kWcynE": {
+          "type": "charm",
+          "settings": {
+            "charm_image": "shopify:\/\/shop_images\/charm8.png"
+          }
+        },
+        "charm_LGLcaF": {
+          "type": "charm",
+          "settings": {
+            "charm_image": "shopify:\/\/shop_images\/charm7.png"
+          }
+        },
+        "charm_XkWQjd": {
+          "type": "charm",
+          "settings": {
+            "charm_image": "shopify:\/\/shop_images\/charm5.png"
+          }
+        },
+        "charm_GRJ4ze": {
+          "type": "charm",
+          "settings": {
+            "charm_image": "shopify:\/\/shop_images\/charm6.png"
+          }
+        },
+        "charm_BbEjnh": {
+          "type": "charm",
+          "settings": {
+            "charm_image": "shopify:\/\/shop_images\/charm3.png"
+          }
+        }
+      },
+      "block_order": [
+        "charm_kWcynE",
+        "charm_LGLcaF",
+        "charm_XkWQjd",
+        "charm_GRJ4ze",
+        "charm_BbEjnh"
+      ],
+      "settings": {
+        "selected_products": [
+          "chain-1",
+          "chain-2",
+          "chain-1-copy",
+          "chain-2-copy",
+          "chain-1-copy-copy",
+          "chain-2-copy-copy"
+        ],
+        "step_title": "Lorem Ipsum",
+        "step_subtitle": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
       }
     }
   },
   "order": [
     "main",
     "builder_section_YAWJa7",
-    "builder_section2_FYdhWz"
+    "builder_section2_FYdhWz",
+    "builder_section3_aNfgDW"
   ]
 }
