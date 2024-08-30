@@ -255,15 +255,14 @@
     const charmsList = document.querySelector('.b-charms_list');
     const maxCharms = 4;
     const checkboxes = Array.from(document.querySelectorAll('.charm-checkbox'));
-    let counter = 0; // Счетчик для отслеживания заполненных слотов
+    let counter = 0;
   
     checkboxes.forEach((checkbox, index) => {
-      const charmImageSrc = checkbox.getAttribute('data-charm').replace(/['"]+/g, ''); // Удаляем лишние кавычки
+      const charmImageSrc = checkbox.getAttribute('data-charm').replace(/['"]+/g, '');
   
       checkbox.addEventListener('change', function() {
         if (this.checked) {
           if (counter < maxCharms) {
-            // Создаем новый элемент div для изображения
             const newCharmItem = document.createElement('div');
             newCharmItem.classList.add('b-charms_list--item', `m-${counter + 1}`);
             setTimeout(() => {
@@ -271,57 +270,56 @@
             }, 300);
             
             const newCharmImage = document.createElement('img');
-            newCharmImage.setAttribute('src', charmImageSrc); // Устанавливаем src без лишних кавычек
+            newCharmImage.setAttribute('src', charmImageSrc);
             newCharmImage.classList.add('b-charms_list--item_img');
   
-            // Добавляем изображение в новый div
             newCharmItem.appendChild(newCharmImage);
-            charmsList.appendChild(newCharmItem); // Вставляем div в контейнер .b-charms_list
-            counter++; // Увеличиваем счетчик после добавления элемента
+            charmsList.appendChild(newCharmItem); 
+            counter++; 
             updateCharmListClass();
           }
         } else {
-          // Удаляем соответствующий div при снятии чекбокса
+       
           const charmToRemove = charmsList.querySelector(`.b-charms_list--item_img[src="${charmImageSrc}"]`);
           if (charmToRemove) {
             const parentItem = charmToRemove.closest('.b-charms_list--item');
             parentItem.classList.remove('m-showed');
-            counter--; // Уменьшаем счетчик перед удалением элемента
+            counter--;
             setTimeout(() => {
               parentItem.remove();
               updateCharmListClass();
-              checkMaxCharms(); // Обновляем доступность чекбоксов после удаления элемента
+              checkMaxCharms(); 
             }, 300);
           }
         }
   
-        // Проверка на достижение максимума после изменения количества элементов
+   
         checkMaxCharms();
       });
     });
   
     function updateCharmListClass() {
       const selectedCharms = checkboxes.filter(checkbox => checkbox.checked).length;
-      charmsList.className = 'b-charms_list'; // Сбросить классы
+      charmsList.className = 'b-charms_list';
   
       if (selectedCharms > 0 && selectedCharms <= maxCharms) {
-        charmsList.classList.add(`m-${selectedCharms}`); // Добавляем класс в зависимости от количества активных чекбоксов
+        charmsList.classList.add(`m-${selectedCharms}`);
       }
     }
   
     function checkMaxCharms() {
-      // Если достигнут максимум, отключаем все неактивные чекбоксы
+     
       if (counter >= maxCharms) {
         checkboxes.forEach(checkbox => {
           if (!checkbox.checked) {
-            checkbox.disabled = true; // Отключаем неактивные чекбоксы
+            checkbox.disabled = true;
           }
-          notice.classList.remove('hidden'); // Показываем уведомление
+          notice.classList.remove('hidden');
         });
       } else {
-        // Если меньше максимума, убеждаемся, что чекбоксы активны
+
         checkboxes.forEach(checkbox => checkbox.disabled = false);
-        notice.classList.add('hidden'); // Показываем уведомление
+        notice.classList.add('hidden');
       }
     }
   });
