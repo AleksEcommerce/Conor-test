@@ -1,0 +1,143 @@
+{{ 'builder-products.css' | asset_url | stylesheet_tag }}
+{{ 'builder-animation.css' | asset_url | stylesheet_tag }}
+
+
+
+
+<div id="pendant-builder-container">
+  {% if section.settings.pendant_image %}
+      <img src="{{ section.settings.pendant_image | image_url: width: 1200 }}" alt="Pendant">
+      <div class="b-charms_presentation"></div>
+  {% endif %}
+  <div id='b-notice' class="b-charms-notice hidden">Maximum number of pendants added</div>
+</div>
+
+<div class="b-charm__list">
+  {% for block in section.blocks %}
+    {% if block.type == 'charm' and block.settings.charm_image %}
+      <div class="b-charm__list-item">
+        <label for="charm-{{ forloop.index }}">
+          <input type="checkbox" id="charm-{{ forloop.index }}" name="charm-{{ forloop.index }}"  class="charm-checkbox" data-charm="{{ block.settings.charm_image | image_url }}">
+          <img src="{{ block.settings.charm_image | image_url }}" alt="Charm" width="50" height="50">
+        </label>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<style>
+  
+  
+
+
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const notice = document.getElementById('b-notice');
+    const pendantContainer = document.getElementById('pendant-builder-container');
+    const charmsList = document.querySelector('.b-charms_presentation');
+    const maxCharms = 4;
+    const checkboxes = Array.from(document.querySelectorAll('.charm-checkbox'));
+    let counter = 0;
+  
+    checkboxes.forEach((checkbox, index) => {
+      const charmImageSrc = checkbox.getAttribute('data-charm').replace(/['"]+/g, '');
+  
+      checkbox.addEventListener('change', function() {
+        if (this.checked) {
+          if (counter < maxCharms) {
+            const newCharmItem = document.createElement('div');
+            newCharmItem.classList.add('b-charms_presentation--item', `m-${counter + 1}`);
+            setTimeout(() => {
+              newCharmItem.classList.add('m-showed');
+            }, 300);
+            
+            const newCharmImage = document.createElement('img');
+            newCharmImage.setAttribute('src', charmImageSrc);
+            newCharmImage.classList.add('b-charms_presentation--item_img');
+  
+            newCharmItem.appendChild(newCharmImage);
+            charmsList.appendChild(newCharmItem); 
+            counter++; 
+            updateCharmListClass();
+          }
+        } else {
+       
+          const charmToRemove = charmsList.querySelector(`.b-charms_presentation--item_img[src="${charmImageSrc}"]`);
+          if (charmToRemove) {
+            const parentItem = charmToRemove.closest('.b-charms_presentation--item');
+            parentItem.classList.remove('m-showed');
+            counter--;
+            setTimeout(() => {
+              parentItem.remove();
+              updateCharmListClass();
+              checkMaxCharms(); 
+            }, 300);
+          }
+        }
+  
+   
+        checkMaxCharms();
+      });
+    });
+  
+    function updateCharmListClass() {
+      const selectedCharms = checkboxes.filter(checkbox => checkbox.checked).length;
+      charmsList.className = 'b-charms_presentation';
+  
+      if (selectedCharms > 0 && selectedCharms <= maxCharms) {
+        charmsList.classList.add(`m-${selectedCharms}`);
+      }
+    }
+  
+    function checkMaxCharms() {
+     
+      if (counter >= maxCharms) {
+        checkboxes.forEach(checkbox => {
+          if (!checkbox.checked) {
+            checkbox.disabled = true;
+          }
+          notice.classList.remove('hidden');
+        });
+      } else {
+
+        checkboxes.forEach(checkbox => checkbox.disabled = false);
+        notice.classList.add('hidden');
+      }
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Pendant Builder 3",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "pendant_image",
+      "label": "Pendant Image",
+      "info": "Upload the base pendant image."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "charm",
+      "name": "Charm",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "charm_image",
+          "label": "Charm Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pendant Builder 3",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

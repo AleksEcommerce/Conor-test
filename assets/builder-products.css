@@ -1,0 +1,132 @@
+.h-hidden {
+    display: none;
+  }
+
+  #pendant-builder-container {
+    width: 600px;
+    margin: 0 auto;  
+    overflow: hidden;
+    position: relative;
+  }
+
+  #pendant-builder-container > img {
+     /* position: absolute; {% endcomment %} */
+    display: block;
+    width: 100%;
+    margin-top: -50%;
+     /* height: 100%; {% endcomment %} */
+     /* min-width: 600px; {% endcomment %} */
+    object-fit: cover;
+    object-position: bottom;
+  }
+
+  @media screen and (max-width: 767px) {
+    #pendant-builder-container {
+      width: 350px;
+    }
+
+    #pendant-builder-container > img {
+      width: 600px;
+      margin-top: -70%;
+    }
+  }
+
+  .b-charm__list {
+    display: flex;
+    justify-content: center;
+    padding-top: 30px;
+    gap: 10px;
+  }
+
+  .b-charm__list-item input[type='checkbox'] {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    position: absolute;
+  }
+
+  .b-charm__list-item input[type='checkbox']:checked + img {
+    pointer-events: none;
+    opacity: 0.5;
+    transform: translateY(-10px);
+  }
+
+  .b-charm__list-item label {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    width: 120px;
+    height: 120px;
+  }
+
+  .b-charm__list-item img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    object-fit: contain;
+  }
+
+  .b-charms-notice {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 10px;
+    background-color: yellow;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+
+  .b-charms_presentation {
+    display: flex;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 40%;
+    width: 200px;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .b-charms_presentation--item {
+    position: absolute;
+     /* width: 50px; {% endcomment %} */
+    width: 25%;
+    transition: all 0.3s ease;
+     /* position: relative; {% endcomment %} */
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .b-charms_presentation--item.m-showed {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .b-charms_presentation--item.m-showed > img {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .b-charms_presentation--item > img {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    top: 0;
+    display: block;
+    object-fit: contain;
+    transition: all 0.3s ease;
+    max-width: 150%;
+  }
+
+  .b-charms_presentation--item {
+  }
+
+  .b-charms_presentation--item_img {
+
+  }
+
