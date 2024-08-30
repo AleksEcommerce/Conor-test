@@ -1,0 +1,135 @@
+
+
+:root {
+    --color-text-white: #ffffff;
+    --color-text: #000000;
+    --color-text-active: var(--color-text);
+    --color-border: #181818;
+    --color-bg-step-done: #000000;
+    --color-bg-step-regular: #ffffff;
+    --color-bg-step-active: #f6f6f6;
+    --color-bg-step-line: #181818;
+    --width-bar: 600px;
+    --width-step: 40px;
+    --height-step: 40px;
+    --height-line: 1px;
+}
+
+.b-steps {
+    position: relative;
+    padding: 0 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.b-steps-nav {
+
+}
+
+.b-steps-nav-item {
+    position: absolute;
+}
+
+.b-steps-nav-item.m-back {
+    left: 0;
+}
+
+.b-steps-nav-item.m-next {
+    right: 0;
+}
+
+/* Steps Items */
+
+.b-steps-list {
+    width: var(--width-bar);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+}
+  
+.b-steps-item {
+    width: var(--width-step);
+    height: var(--height-step);
+    background-color: var(--color-bg-step-regular);
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    color: var(--color-text);
+    font-weight: 600;
+    text-align: center;
+    line-height: var(--height-step);
+    z-index: 1;
+    position: relative;
+}
+  
+.b-steps-item:first-child {
+    line-height: var(var(--height-step));
+}
+  
+.b-steps-item:nth-child(n+2):before {
+    position: relative;
+    z-index: -1;
+    width: calc(var(--width-bar) / 2 - calc(var(--width-step) * 1.5));
+    height: var(--height-line);
+    display: block;
+    background-color: var(--color-bg-step-line);
+    transform: translate(calc((var(--width-bar) / 2 - var(--width-step) * 1.5) * -1 ), calc(var(--height-step) / 2 - var(--height-line)));
+    content: '';  
+}
+
+.b-steps-item:after {
+    width: 150px;
+    display: block;
+    transform: translate(-55px, 3px);
+    color: var(--color-text);
+    content: attr(data-desc);
+    font-weight: 400;
+    font-size: 13px;
+    display: none;
+}
+
+.b-steps-item:first-child:after {
+    transform: translate(-55px, -1px);  
+}
+
+.b-steps-item.active {
+    background-color: var(--color-bg-step-active);
+    border-color: var(--color-border);
+    color: var(--color-text-active);
+}
+
+.b-steps-item.active:before {
+    background: var(--color-border);
+}
+
+
+
+.b-steps-item.done {
+    background-color: var(--color-bg-step-done);
+    border-color: var(--color-bg-step-done);
+    color: var(--color-text-white);
+}
+
+.b-steps-item.done:before {
+    background-color: var(--color-bg-step-done);  
+}
+
+/* Steps Description */
+.b-steps-desc {
+    text-align: center;
+}
+
+.b-steps-desc-title {
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 10px;
+    padding: 0;
+}
+
+.b-steps-desc-content {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--color-text);
+    margin: 0;
+}

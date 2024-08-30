@@ -1,45 +1,83 @@
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet"> 
+{{ 'builder-layout.css' | asset_url | stylesheet_tag }}
 {{ 'builder-products.css' | asset_url | stylesheet_tag }}
 {{ 'builder-animation.css' | asset_url | stylesheet_tag }}
+{{ 'builder-steps.css' | asset_url | stylesheet_tag }}
 
-
-
-
-<div id="pendant-builder-container">
-  {% if section.settings.pendant_image %}
-      <img src="{{ section.settings.pendant_image | image_url: width: 1200 }}" alt="Pendant">
-      <div class="b-charms_presentation"></div>
-  {% endif %}
-  <div id='b-notice' class="b-charms-notice hidden">Maximum number of pendants added</div>
-</div>
-
-<div class="b-charm__list">
-  {% for block in section.blocks %}
-    {% if block.type == 'charm' and block.settings.charm_image %}
-      <div class="b-charm__list-item">
-        <label for="charm-{{ forloop.index }}">
-          <input type="checkbox" id="charm-{{ forloop.index }}" name="charm-{{ forloop.index }}"  class="charm-checkbox" data-charm="{{ block.settings.charm_image | image_url }}">
-          <img src="{{ block.settings.charm_image | image_url }}" alt="Charm" width="50" height="50">
-        </label>
+<section class='l-builder'>
+  <article class="l-builder-steps">
+    <div class="b-steps">
+      <div class="b-steps-nav">
+        <div class="b-steps-nav-item m-back">
+          <span class="b-steps-nav-item__link" id="step-prev">
+            <i class="icon-chevron-left"></i>
+            <span>Back</span>
+          </span>
+        </div>
+        <div class="b-steps-nav-item m-next">
+          <span class="b-steps-nav-item__link" id="step-next">
+            <span>Next</span>
+            <i class="icon-chevron-right"></i>
+          </span>
+        </div>
       </div>
-    {% endif %}
-  {% endfor %}
-</div>
+      <div id="steps" class="b-steps-list">
+        <div class="b-steps-item done" data-desc="Listing information">1</div>
+        <div class="b-steps-item active" data-desc="Photos & Details">2</div>
+        <div class="b-steps-item" data-desc="Review & Post">3</div>
+      </div>
+      <div class="b-steps-desc">
+        <h2 class="b-steps-desc-title">Lorem Ipsum</h2>
+        <p class="b-steps-desc-subtitle">orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, </p>
+      </div>
+    </div>
+  </article>
 
-<style>
-  
-  
+  <article class="l-builder-picture">
+    <div class="b-chain" id="pendant-builder-container">
+      {% if section.settings.pendant_image %}
+          <img src="{{ section.settings.pendant_image | image_url: width: 1200 }}" alt="Pendant">
+          <div class="b-charms_presentation"></div>
+      {% endif %}
+      <div id='b-notice' class="b-charms-notice hidden">Maximum number of pendants added</div>
+    </div>
+  </article>
 
-
-</style>
+  <article class="b-charm__list">
+    {% for block in section.blocks %}
+      {% if block.type == 'charm' and block.settings.charm_image %}
+        <div class="b-charm__list-item">
+          <label for="charm-{{ forloop.index }}">
+            <input type="checkbox" id="charm-{{ forloop.index }}" name="charm-{{ forloop.index }}"  class="charm-checkbox" data-charm="{{ block.settings.charm_image | image_url }}">
+            <img src="{{ block.settings.charm_image | image_url }}" alt="Charm" width="50" height="50">
+          </label>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </article>
+</section>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    const steps = document.querySelectorAll('.step');
     const notice = document.getElementById('b-notice');
     const pendantContainer = document.getElementById('pendant-builder-container');
     const charmsList = document.querySelector('.b-charms_presentation');
     const maxCharms = 4;
     const checkboxes = Array.from(document.querySelectorAll('.charm-checkbox'));
     let counter = 0;
+{% comment %} 
+    steps.forEach((element, index) => {
+      
+      if (!element.classList.contains('active')) {
+        element.classList.add('done');
+        element.innerHTML = '<i class="icon-ok"></i>';
+      } else {
+        return;
+      }
+    });
+ {% endcomment %}
+
   
     checkboxes.forEach((checkbox, index) => {
       const charmImageSrc = checkbox.getAttribute('data-charm').replace(/['"]+/g, '');
