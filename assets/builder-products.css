@@ -2,14 +2,14 @@
     display: none;
 }
 
-  #pendant-builder-container {
+  .b-chain {
     width: 600px;
     margin: 0 auto;  
     overflow: hidden;
     position: relative;
   }
 
-  #pendant-builder-container > img {
+  .b-chain .swiper-slide > img {
      /* position: absolute; {% endcomment %} */
     display: block;
     width: 100%;
@@ -21,11 +21,11 @@
   }
 
   @media screen and (max-width: 767px) {
-    #pendant-builder-container {
+    .b-chain {
       width: 350px;
     }
 
-    #pendant-builder-container > img {
+    .b-chain .swiper-slide > img {
       width: 600px;
       margin-top: -70%;
     }

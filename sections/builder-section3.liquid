@@ -4,6 +4,10 @@
 {{ 'builder-animation.css' | asset_url | stylesheet_tag }}
 {{ 'builder-steps.css' | asset_url | stylesheet_tag }}
 
+<!-- Подключение стилей и скриптов Swiper -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
+
 <script src="/assets/builder-script.js" defer></script>
 
 <section class='l-builder'>
@@ -29,18 +33,36 @@
         <div class="b-steps-item" data-desc="Review & Post">3</div>
       </div>
       <div class="b-steps-desc">
-        <h2 class="b-steps-desc-title">Lorem Ipsum</h2>
-        <p class="b-steps-desc-subtitle">orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, </p>
+        <h2 class="b-steps-desc-title">{{ section.settings.step_title_1 }}</h2>
+        <p class="b-steps-desc-subtitle">{{ section.settings.step_subtitle_1 }}</p>
       </div>
     </div>
   </article>
 
   <article class="l-builder-picture">
     <div class="b-chain" id="pendant-builder-container">
-      {% if section.settings.pendant_image %}
-          <img src="{{ section.settings.pendant_image | image_url: width: 1200 }}" alt="Pendant">
-          <div class="b-charms_presentation"></div>
-      {% endif %}
+      <!-- Swiper контейнер -->
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+          {% for product in section.settings.selected_products %}
+            {% assign product = all_products[product] %}
+            <div class="swiper-slide">
+              <img src="{{ product.metafields.custom.charm_builder_image | img_url: 'master' }}" alt="{{ product.title }}">
+              <span class="b-chain-text">{{ product.title }}</span>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="b-charms_presentation"></div>
+        <!-- Навигационные кнопки -->
+        <div class="swiper-button-next">
+          
+        </div>
+        <div class="swiper-button-prev">
+          
+        </div>
+        <!-- Пагинация -->
+        <div class="swiper-pagination"></div>
+      </div>
       <div id='b-notice' class="b-charms-notice hidden">Maximum number of pendants added</div>
     </div>
   </article>
@@ -50,7 +72,7 @@
       {% if block.type == 'charm' and block.settings.charm_image %}
         <div class="b-charm__list-item">
           <label for="charm-{{ forloop.index }}">
-            <input type="checkbox" id="charm-{{ forloop.index }}" name="charm-{{ forloop.index }}"  class="charm-checkbox" data-charm="{{ block.settings.charm_image | image_url }}">
+            <input type="checkbox" id="charm-{{ forloop.index }}" name="charm-{{ forloop.index }}" class="charm-checkbox" data-charm="{{ block.settings.charm_image | image_url }}">
             <img src="{{ block.settings.charm_image | image_url }}" alt="Charm" width="50" height="50">
           </label>
         </div>
@@ -60,7 +82,21 @@
 </section>
 
 <script>
-  
+  document.addEventListener('DOMContentLoaded', function() {
+    // Инициализация Swiper
+    const swiper = new Swiper('.swiper-container', {
+      loop: true,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      slidesPerView: 1,
+    });
+  });
 </script>
 
 {% schema %}
@@ -68,10 +104,47 @@
   "name": "Pendant Builder 3",
   "settings": [
     {
-      "type": "image_picker",
-      "id": "pendant_image",
-      "label": "Pendant Image",
-      "info": "Upload the base pendant image."
+      "type": "product_list",
+      "id": "selected_products",
+      "label": "Select Products",
+      "info": "Choose the products to display in the carousel.",
+      "limit": 10
+    },
+    {
+      "type": "text",
+      "id": "step_title_1",
+      "label": "Step Title 1",
+      "default": "Lorem Ipsum"
+    },
+    {
+      "type": "textarea",
+      "id": "step_subtitle_1",
+      "label": "Step Subtitle 1",
+      "default": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    },
+    {
+      "type": "text",
+      "id": "step_title_2",
+      "label": "Step Title 2",
+      "default": "Lorem Ipsum"
+    },
+    {
+      "type": "textarea",
+      "id": "step_subtitle_2",
+      "label": "Step Subtitle 2",
+      "default": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    },
+    {
+      "type": "text",
+      "id": "step_title_3",
+      "label": "Step Title 3",
+      "default": "Lorem Ipsum"
+    },
+    {
+      "type": "textarea",
+      "id": "step_subtitle_3",
+      "label": "Step Subtitle 3",
+      "default": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
     }
   ],
   "blocks": [
