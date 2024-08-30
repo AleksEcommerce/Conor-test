@@ -3,7 +3,7 @@
 {{ 'builder-products.css' | asset_url | stylesheet_tag }}
 {{ 'builder-animation.css' | asset_url | stylesheet_tag }}
 {{ 'builder-steps.css' | asset_url | stylesheet_tag }}
-
+ 
 <!-- Подключение стилей и скриптов Swiper -->
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
@@ -54,10 +54,10 @@
         </div>
         <div class="b-charms_presentation"></div>
         <!-- Навигационные кнопки -->
-        <div class="swiper-button-next">
+        <div class="swiper-button-next b-chain_nav-btn m-next">
           
         </div>
-        <div class="swiper-button-prev">
+        <div class="swiper-button-prev b-chain_nav-btn m-prev">
           
         </div>
         <!-- Пагинация -->
@@ -65,6 +65,7 @@
       </div>
       <div id='b-notice' class="b-charms-notice hidden">Maximum number of pendants added</div>
     </div>
+    <button class="b-select">SELECT</button>
   </article>
 
   <article class="b-charm__list">

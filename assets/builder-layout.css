@@ -17,4 +17,6 @@
 
 .l-builder-picture {
     background-color: var(--background-picture);
+    padding-bottom: 85px;
+    position: relative;
 }

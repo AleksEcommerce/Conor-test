@@ -3,10 +3,22 @@
 }
 
   .b-chain {
-    width: 600px;
+    width: 900px;
     margin: 0 auto;  
     overflow: hidden;
     position: relative;
+  }
+
+  .b-chain-text {
+    position: absolute;
+    bottom: 13%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    color: #000000;
+    font-size: 20px;
+    line-height: 1.1em;
+    text-align: center;
+    z-index: 1;
   }
 
   .b-chain .swiper-slide > img {
@@ -29,6 +41,33 @@
       width: 600px;
       margin-top: -70%;
     }
+  }
+
+  .b-chain .b-chain_nav-btn {
+    color: #000000;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #000;
+    border-radius: 50%;
+    background-color: #ffffff;
+    text-align: center;
+  }
+  
+  .b-chain .b-chain_nav-btn::after {
+    font-size: 20px;
+  }
+
+  .b-chain .swiper-pagination-bullet {
+    width: 20px;
+    height: 20px;
+    background-color: #cdcdcd;
+    border-radius: 50%;
+  }
+
+  .b-chain .swiper-pagination-bullet.swiper-pagination-bullet-active {
+    background-color: #ddb65a;
+    border: 1px solid #ffffff;
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.99);
   }
 
   .b-charm__list {
@@ -87,10 +126,11 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    bottom: 40%;
+    bottom: 36%;
     width: 200px;
     justify-content: center;
     transition: all 0.3s ease;
+    z-index: 2;
   }
 
   .b-charms_presentation--item {
@@ -128,5 +168,26 @@
 
   .b-charms_presentation--item_img {
 
+  }
+
+  .b-select {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 50px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    background-color: #000000;
+    letter-spacing: 1px;
+    border-radius: 15px;
+    text-transform: uppercase;
+    padding: 7px 20px 5px;
+    outline: none;
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1.2em;
+    box-shadow: none;
+    border: none;
   }
 
