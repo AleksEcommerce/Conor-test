@@ -17,100 +17,8 @@
         "padding_bottom": 28
       }
     },
-    "builder_section_YAWJa7": {
-      "type": "builder-section",
-      "disabled": true,
-      "settings": {
-        "pendant_image": "shopify:\/\/shop_images\/103-0280_color_polishedgold_01_1600x_d551a3b9-d58b-4b2d-a898-8f531c4908e2.jpg"
-      }
-    },
-    "builder_section2_FYdhWz": {
-      "type": "builder-section2",
-      "blocks": {
-        "charm_fdhwxz": {
-          "type": "charm",
-          "settings": {
-            "charm_image": "shopify:\/\/shop_images\/1f55f5b5ab5e5a21ed9e65fa25aef440.png"
-          }
-        },
-        "charm_Mbxczf": {
-          "type": "charm",
-          "settings": {
-            "charm_image": "shopify:\/\/shop_images\/46b36fb88caef74de73671edd42e83bc.png"
-          }
-        },
-        "charm_3QaBzr": {
-          "type": "charm",
-          "settings": {
-            "charm_image": "shopify:\/\/shop_images\/a93ab043b2ae024c338e22e140d0489f.png"
-          }
-        },
-        "charm_LkQDHQ": {
-          "type": "charm",
-          "settings": {
-            "charm_image": "shopify:\/\/shop_images\/1b7dd8d3a0449ec9efd6f15b04998c35.png"
-          }
-        },
-        "charm_LYCkBh": {
-          "type": "charm",
-          "settings": {
-            "charm_image": "shopify:\/\/shop_images\/55f1c3469004a404604d52e1938b2422.png"
-          }
-        }
-      },
-      "block_order": [
-        "charm_fdhwxz",
-        "charm_Mbxczf",
-        "charm_3QaBzr",
-        "charm_LkQDHQ",
-        "charm_LYCkBh"
-      ],
-      "disabled": true,
-      "settings": {
-        "pendant_image": "shopify:\/\/shop_images\/103-0280_color_polishedgold_01_1600x_d551a3b9-d58b-4b2d-a898-8f531c4908e2.jpg"
-      }
-    },
     "builder_section3_aNfgDW": {
       "type": "builder-section3",
-      "blocks": {
-        "charm_kWcynE": {
-          "type": "charm",
-          "settings": {
-            "charm_image": "shopify:\/\/shop_images\/charm8.png"
-          }
-        },
-        "charm_LGLcaF": {
-          "type": "charm",
-          "settings": {
-            "charm_image": "shopify:\/\/shop_images\/charm7.png"
-          }
-        },
-        "charm_XkWQjd": {
-          "type": "charm",
-          "settings": {
-            "charm_image": "shopify:\/\/shop_images\/charm5.png"
-          }
-        },
-        "charm_GRJ4ze": {
-          "type": "charm",
-          "settings": {
-            "charm_image": "shopify:\/\/shop_images\/charm6.png"
-          }
-        },
-        "charm_BbEjnh": {
-          "type": "charm",
-          "settings": {
-            "charm_image": "shopify:\/\/shop_images\/charm3.png"
-          }
-        }
-      },
-      "block_order": [
-        "charm_kWcynE",
-        "charm_LGLcaF",
-        "charm_XkWQjd",
-        "charm_GRJ4ze",
-        "charm_BbEjnh"
-      ],
       "settings": {
         "select_first_product": [
           "chain-1",
@@ -141,8 +49,6 @@
   },
   "order": [
     "main",
-    "builder_section_YAWJa7",
-    "builder_section2_FYdhWz",
     "builder_section3_aNfgDW"
   ]
 }
