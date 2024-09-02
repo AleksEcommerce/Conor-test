@@ -1,22 +1,49 @@
 :root {
     --background-picture: #f2f2f2;
+    --background-charms: #ffffff;
 }
 
 
 .l-builder {
-    padding: 50px 0;
+    padding: 0 0 50px;
+    background-color: var(--background-picture);
+}
+
+.l-builder.m-step-1 {
+
+}
+
+.l-builder.m-step-1 .b-chain .swiper-pagination,
+.l-builder.m-step-1 .b-chain .b-chain_nav-btn {
+    display: block;
+}
+
+.l-builder.m-step-1 .b-select {
+    display: flex;
+}
+
+.l-builder.m-step-2 .l-builder-charms {
+    display: block;
+}
+
+.l-builder.m-step-3 {
+    
 }
 
 .l-builder-steps {
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 0 15px;
-  margin-bottom: 30px;
+  background-color: #ffffff;
+  padding: 50px 0;
 }
 
 .l-builder-picture {
-    background-color: var(--background-picture);
-    padding-bottom: 85px;
+    padding-bottom: 115px;
     position: relative;
+}
+
+.l-builder-charms {
+    display: none;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: var(--background-charms);
 }

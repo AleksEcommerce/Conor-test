@@ -10,27 +10,27 @@
 
 <script src="{{ 'builder-script.js' | asset_url }}" defer></script>
 
-<section class='l-builder'>
+<section id='builder-container' class='l-builder m-step-1'>
   <article class="l-builder-steps">
     <div class="b-steps">
       <div class="b-steps-nav">
         <div class="b-steps-nav-item m-back">
-          <span class="b-steps-nav-item__link" id="step-prev">
+          <span class="b-steps-nav-item__link" id="builder-step-prev">
             <i class="icon-chevron-left"></i>
             <span>Back</span>
           </span>
         </div>
         <div class="b-steps-nav-item m-next">
-          <span class="b-steps-nav-item__link" id="step-next">
+          <span class="b-steps-nav-item__link" id="builder-step-next">
             <span>Next</span>
             <i class="icon-chevron-right"></i>
           </span>
         </div>
       </div>
-      <div id="steps" class="b-steps-list">
-        <div class="b-steps-item done" data-desc="Listing information">1</div>
-        <div class="b-steps-item active" data-desc="Photos & Details">2</div>
-        <div class="b-steps-item" data-desc="Review & Post">3</div>
+      <div id="builder-steps" class="b-steps-list">
+        <div class="b-steps-item" data-item="1">1</div>
+        <div class="b-steps-item" data-item="2">2</div>
+        <div class="b-steps-item" data-item="3">3</div>
       </div>
       <div class="b-steps-desc">
         <h2 class="b-steps-desc-title">{{ section.settings.step_title_1 }}</h2>
@@ -44,11 +44,15 @@
       <!-- Swiper контейнер -->
       <div class="swiper-container">
         <div class="swiper-wrapper">
-          {% for product in section.settings.selected_products %}
+          {% for product in section.settings.select_first_product %}
             {% assign product = all_products[product] %}
-            <div class="swiper-slide">
+            {% assign product_price = product.price | divided_by: 100 %}
+            <div class="swiper-slide" data-product-active-id="{{ product.variants.first.id }}">
               <img src="{{ product.metafields.custom.charm_builder_image | img_url: 'master' }}" alt="{{ product.title }}">
-              <span class="b-chain-text">{{ product.title }}</span>
+              <span class="b-chain-text">
+                <span class="b-chain-text_title">{{ product.title }}</span>
+                <span class="b-chain-text_subtitle"> Lorem Ipsum Color</span>
+              </span>
             </div>
           {% endfor %}
         </div>
@@ -65,20 +69,47 @@
       </div>
       <div id='b-notice' class="b-charms-notice hidden">Maximum number of pendants added</div>
     </div>
-    <button class="b-select">SELECT</button>
+    <button id="b-select_btn" class="b-select" data-product-active="">SELECT</button>
+    
   </article>
 
-  <article class="b-charm__list">
-    {% for block in section.blocks %}
-      {% if block.type == 'charm' and block.settings.charm_image %}
+  <article class="l-builder-charms">
+    <div class="b-builder__cart">
+      <div class="b-builder__cart-title">
+        <h2 class="b-builder__cart-title_text"></h2>
+        <p class="b-builder__cart-title_subtitle"></p>
+      </div>
+      <ul class="b-builder__cart-list">
+        <li class="b-builder__cart-list_item"><div>Test Decription</div></li>
+        <li class="b-builder__cart-list_item"><div>Test Decription</div></li>
+        <li class="b-builder__cart-list_item"><div>Test Decription</div></li>
+        <li class="b-builder__cart-list_item"><div>Test Decription</div></li>
+      </ul>
+      <div class="b-builder__cart-total">
+        <span class="b-builder__cart-total_text">
+          Subtotal: <span id="builder-cart-total"></span>
+        </span>
+        <span id="builder-cart-total" class="b-builder__cart-total_price">$0.00</span>
+      </div>
+    </div>
+    <div class="b-charm__list">
+      {% for product in section.settings.select_second_product %}
+        {% assign product = all_products[product] %}
         <div class="b-charm__list-item">
           <label for="charm-{{ forloop.index }}">
-            <input type="checkbox" id="charm-{{ forloop.index }}" name="charm-{{ forloop.index }}" class="charm-checkbox" data-charm="{{ block.settings.charm_image | image_url }}">
-            <img src="{{ block.settings.charm_image | image_url }}" alt="Charm" width="50" height="50">
+            <input 
+              type="checkbox" 
+              id="charm-{{ forloop.index }}" 
+              name="charm-{{ forloop.index }}" 
+              class="charm-checkbox" 
+              data-charm="{{ product.metafields.custom.charm_builder_image | image_url }}"
+              data-product-id="{{ product.variants.first.id }}"
+            >
+            <img class="b-charm__list-item_img" src="{{ product.metafields.custom.charm_builder_image | img_url: 'medium' }}" alt="{{ product.title }}">
           </label>
         </div>
-      {% endif %}
-    {% endfor %}
+      {% endfor %}
+    </div>
   </article>
 </section>
 
@@ -97,6 +128,53 @@
       },
       slidesPerView: 1,
     });
+
+    var selectedProductsFirst = [
+      {% for product in section.settings.select_first_product %}
+        {
+            "id": "{{ product.variants.first.id }}",
+            "title": "{{ product.title | escape }}",
+            "price": {{ product.variants.first.price | divided_by: 100 }},
+            "image": "{{ product.featured_image | img_url: 'small' }}",
+            "variant_title": "{{ product.variants.first.title | escape }}"
+        }{% if forloop.last == false %},{% endif %}
+      {% endfor %}
+    ];
+
+    var selectedProductsSecond = [
+      {% for product in section.settings.select_second_product %}
+        {
+            "id": "{{ product.variants.first.id }}",
+            "title": "{{ product.title | escape }}",
+            "price": {{ product.variants.first.price | divided_by: 100 }},
+            "image": "{{ product.featured_image | img_url: 'small' }}",
+            "variant_title": "{{ product.variants.first.title | escape }}"
+        }{% if forloop.last == false %},{% endif %}
+      {% endfor %}
+    ];
+
+    // Обновленная функция для объединения и записи данных в localStorage
+    function setLocalStorageData(productsArray, name) {
+      const storageKey = `builder.${name}`;
+      // Извлекаем существующие данные или инициализируем пустым массивом
+      const existingData = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+      // Объединяем существующие данные с новыми продуктами
+      const updatedData = [...existingData, ...productsArray];
+
+      // Удаляем дубликаты на основе id продукта
+      const uniqueData = updatedData.reduce((acc, current) => {
+        if (!acc.some(product => product.id === current.id)) {
+          acc.push(current);
+        }
+        return acc;
+      }, []);
+
+      // Сохраняем объединенный массив без дубликатов в localStorage
+      localStorage.setItem(storageKey, JSON.stringify(uniqueData));
+    }
+
+    setLocalStorageData([...selectedProductsFirst, ...selectedProductsSecond], 'selectedProducts');
   });
 </script>
 
@@ -105,8 +183,12 @@
   "name": "Pendant Builder 3",
   "settings": [
     {
+      "type": "header",
+      "content": "Step 1: Select a Chain"
+    },
+    {
       "type": "product_list",
-      "id": "selected_products",
+      "id": "select_first_product",
       "label": "Select Products",
       "info": "Choose the products to display in the carousel.",
       "limit": 10
@@ -114,51 +196,53 @@
     {
       "type": "text",
       "id": "step_title_1",
-      "label": "Step Title 1",
+      "label": "Step 1 Title",
       "default": "Lorem Ipsum"
     },
     {
       "type": "textarea",
       "id": "step_subtitle_1",
-      "label": "Step Subtitle 1",
+      "label": "Step 1 Subtitle",
       "default": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    },
+    {
+      "type": "header",
+      "content": "Step 2: Choose Your Charms"
+    },
+    {
+      "type": "product_list",
+      "id": "select_second_product",
+      "label": "Select Products",
+      "info": "Choose the products to display in the scrollbar.",
+      "limit": 15
     },
     {
       "type": "text",
       "id": "step_title_2",
-      "label": "Step Title 2",
+      "label": "Step 2 Title",
       "default": "Lorem Ipsum"
     },
     {
       "type": "textarea",
       "id": "step_subtitle_2",
-      "label": "Step Subtitle 2",
+      "label": "Step 2 Subtitle",
       "default": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    },
+    {
+      "type": "header",
+      "content": "Step 3: Add Charm Spacers"
     },
     {
       "type": "text",
       "id": "step_title_3",
-      "label": "Step Title 3",
+      "label": "Step 3 Title",
       "default": "Lorem Ipsum"
     },
     {
       "type": "textarea",
       "id": "step_subtitle_3",
-      "label": "Step Subtitle 3",
+      "label": "Step 3 Subtitle",
       "default": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-    }
-  ],
-  "blocks": [
-    {
-      "type": "charm",
-      "name": "Charm",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "charm_image",
-          "label": "Charm Image"
-        }
-      ]
     }
   ],
   "presets": [
