@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const cartProductTitle = cart.querySelector('.b-builder__cart-title_text');
     const cartSubtitle = document.querySelector('.b-builder__cart-title_subtitle');
     const cartTotal = document.getElementById('builder-cart-total');
-    const cartItemsNumber = document.getElementById('builder-cart-total');
+    const cartItemsNumber = document.getElementById('builder-cart-total-items');
 
     const notice = document.getElementById('b-notice'); // Notice for maximum number of charms
     const pendantContainer = document.getElementById('pendant-builder-container'); // Container for Slider
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const activeSlide = document.querySelector('#pendant-builder-container .swiper-slide-active');
         const currentProductId = activeSlide.getAttribute('data-product-active-id'); 
 
-        // getProductFromLocalStorage(currentProductId);
+        clearCartStorage();
         const productCurrent = getProductFromLocalStorage(currentProductId);
         addProductToCartStorage(productCurrent);
         calcCartTotal();
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // Cart
-    function calcCartTotal(item) {
+    function calcCartTotal() {
         // Получаем данные из localStorage по ключу 'builder.builderCart'
         const cartData = JSON.parse(localStorage.getItem('builder.builderCart')) || [];
 
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 0); // Начальное значение суммы равно 0
 
         let catLengthText = cartData.length > 1 ? ' items' : ' item';
-
+        console.log(total);
         cartTotal.textContent = total;
         cartItemsNumber.textContent = cartData.length + catLengthText;
         return total;

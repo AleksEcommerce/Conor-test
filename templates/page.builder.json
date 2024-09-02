@@ -112,16 +112,30 @@
         "charm_BbEjnh"
       ],
       "settings": {
-        "selected_products": [
+        "select_first_product": [
           "chain-1",
-          "chain-2",
           "chain-1-copy",
-          "chain-2-copy",
           "chain-1-copy-copy",
+          "chain-2",
+          "chain-2-copy",
           "chain-2-copy-copy"
         ],
-        "step_title": "Lorem Ipsum",
-        "step_subtitle": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+        "step_title_1": "Lorem Ipsum",
+        "step_subtitle_1": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "select_second_product": [
+          "charm1",
+          "charm2",
+          "charm3",
+          "charm4",
+          "charm5",
+          "charm6",
+          "charm7",
+          "charm8"
+        ],
+        "step_title_2": "Lorem Ipsum",
+        "step_subtitle_2": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "step_title_3": "Lorem Ipsum",
+        "step_subtitle_3": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
       }
     }
   },
