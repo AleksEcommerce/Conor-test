@@ -257,8 +257,25 @@
 
 .b-builder__cart-list {
   list-style: none;
-  padding: 0;
+  padding: 0 5px 0 0;
   margin: 0;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.b-builder__cart-list::-webkit-scrollbar {
+  width: 4px;
+  border: 1px solid #d5d5d5;
+}
+
+.b-builder__cart-list::-webkit-scrollbar-track {
+  border-radius: 3px;
+  background: #eeeeee;
+}
+
+.b-builder__cart-list::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background: grey;
 }
 
 .b-builder__cart-list_item {
@@ -268,6 +285,8 @@
   overflow: hidden;
   transition: all 0.4s ease;
   text-transform: uppercase;
+  line-height: 1.2em;
+  margin-bottom: 10px;
 }
 
 .b-builder__cart-list .b-builder__cart-list_item:first-child .b-builder__cart-list_item-remove {
@@ -312,7 +331,15 @@
 }
 
 .b-builder__cart-total {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 17px 20px 0;
+  margin: 0 -20px;
   display: flex;
   justify-content: space-between;
+}
+
+.b-builder__cart-total_text {
+  font-size: 16px;
+  font-weight: bold;
 }
 
