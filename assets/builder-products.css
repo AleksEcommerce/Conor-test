@@ -1,3 +1,11 @@
+:root {
+  --swiper-pagination-bottom: 30px;
+  --width-container: 1200px;
+  --width-chars-item: 120px;
+  --height-chars-item: 120px;
+  --padding-top-chars-item: 15px;
+}
+
 .h-hidden {
     display: none;
 }
@@ -11,6 +19,7 @@
   }
 
   .b-chain-text {
+    display: none;
     position: absolute;
     bottom: 13%;
     left: 50%;
@@ -18,7 +27,6 @@
     color: #000000;
     text-align: center;
     z-index: 1;
-    display: flex;
     letter-spacing: 1px;
   }
 
@@ -81,6 +89,7 @@
 
   .b-chain .swiper-pagination {
     display: none;
+    bottom: var(--swiper-pagination-bottom, 8px);
   }
 
   .b-chain .swiper-pagination-bullet {
@@ -100,7 +109,7 @@
     display: flex;
     justify-content: center;
     overflow-x: auto;
-    padding-top: 15px;
+    padding-top: var(--padding-top-chars-item);
     gap: 10px;
     scrollbar-color: #cccccc #f5f5f5;
     scrollbar-width: thin;
@@ -132,8 +141,8 @@
     display: block;
     position: relative;
     cursor: pointer;
-    width: 120px;
-    height: 120px;
+    width: var(--width-chars-item);
+    height: var(--height-chars-item);
   }
 
   .b-charm__list-item_img {
@@ -213,7 +222,7 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    bottom: 50px;
+    bottom: 115px;
     cursor: pointer;
     z-index: 10;
     background-color: #000000;
@@ -241,11 +250,6 @@
   margin-bottom: 10px;
 }
 
-.b-builder__cart-title_text {
-  margin: 0;
-  padding: 0;
-}
-
 .b-builder__cart-title_subtitle {
   margin: 0;
   padding: 0;
@@ -258,10 +262,36 @@
 }
 
 .b-builder__cart-list_item {
+  position: relative;
   display: grid;
   grid-template-rows: 0fr;
   overflow: hidden;
   transition: all 0.4s ease;
+  text-transform: uppercase;
+}
+
+.b-builder__cart-list .b-builder__cart-list_item:first-child .b-builder__cart-list_item-remove {
+  display: none;
+}
+
+.b-builder__cart-list_item-remove {
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+}
+
+.b-builder__cart-list_item-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+}
+
+.b-builder__cart-list_item-price {
+  font-size: 16px;
+  color: grey;
+  margin: 0;
+  padding: 0;
 }
 
 .b-builder__cart-list_item div {
@@ -279,5 +309,10 @@
   max-height: 200px;
   visibility: visible;
   opacity: 1;
+}
+
+.b-builder__cart-total {
+  display: flex;
+  justify-content: space-between;
 }
 

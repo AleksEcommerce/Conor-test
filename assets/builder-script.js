@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Builder Cart
   const cart = document.querySelector('.b-builder__cart');
-  const cartProductTitle = cart.querySelector('.b-builder__cart-title_text');
   const cartSubtitle = document.querySelector('.b-builder__cart-title_subtitle');
   const cartTotal = document.getElementById('builder-cart-total');
   const cartItemsNumber = document.getElementById('builder-cart-total-items');
@@ -101,8 +100,6 @@ document.addEventListener('DOMContentLoaded', function() {
     addProductToCartStorage(productCurrent);
     calcCartTotal();
     switchStep(2);
-
-    cartProductTitle.textContent = productCurrent.title;
   });
 
   function getProductFromLocalStorage(productId) {
@@ -197,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
       let catLengthText = cartData.length > 1 ? ' items' : ' item';
       console.log(total);
       
-      cartTotal.textContent = total;
+      cartTotal.textContent = "$" + total;
       cartItemsNumber.textContent = cartData.length + catLengthText;
       return total;
   } 
@@ -224,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
             listItem.innerHTML = `
                 <span class="b-builder__cart-list_item-title">${product.title}</span>
                 <span class="b-builder__cart-list_item-price">${product.price}</span>
-                <button class="b-builder__cart-list_item-remove" data-product-id="${product.id}">X</button>
+                <span class="b-builder__cart-list_item-remove" data-product-id="${product.id}">X</span>
             `;
             builderCartList.appendChild(listItem);
 
