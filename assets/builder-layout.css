@@ -5,6 +5,7 @@
 
 
 .l-builder {
+    position: relative;
     padding: 0 0 50px;
     background-color: var(--background-picture);
 }
@@ -27,8 +28,15 @@
     background-color: var(--background-charms);
 }
 
-.l-builder.m-step-1 {
+.l-builder-cart {
+    position: absolute;
+    width: 400px;
+    right: 0;
+    bottom: 0;
+}
 
+.l-builder.m-step-1 .l-builder-cart {
+    display: none;
 }
 
 .l-builder.m-step-1 .b-chain .swiper-pagination,

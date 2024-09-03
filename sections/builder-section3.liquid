@@ -81,14 +81,13 @@
     
   </article>
 
-  <article class="l-builder-charms">
+  <article class="l-builder-cart">
     <div class="b-builder__cart">
       <div class="b-builder__cart-title">
         <h2 class="b-builder__cart-title_text"></h2>
         <p class="b-builder__cart-title_subtitle"></p>
       </div>
       <ul id="builder-cart-list" class="b-builder__cart-list">
-        
       </ul>
       <div class="b-builder__cart-total">
         <span class="b-builder__cart-total_text">
@@ -97,6 +96,9 @@
         <span id="builder-cart-total" class="b-builder__cart-total_price">$0.00</span>
       </div>
     </div>
+  </article>
+
+  <article class="l-builder-charms">
     <div class="b-charm__list">
       {% for product in section.settings.select_second_product %}
         {% assign product = all_products[product] %}

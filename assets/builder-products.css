@@ -233,10 +233,6 @@
 
 /* Builder Cart */
 .b-builder__cart {
-  position: absolute;
-  width: 400px;
-  right: 0;
-  bottom: calc(100% + 10px);
   background-color: #ffffff;
   padding: 20px;
 }

@@ -288,6 +288,10 @@ document.addEventListener('DOMContentLoaded', function() {
       const relatedCheckbox = document.querySelector(`.charm-checkbox[data-product-id="${productId}"]`);
       if (relatedCheckbox) {
         relatedCheckbox.checked = false;
+  
+        // Инициализируем событие 'change' на чекбоксе
+        const event = new Event('change');
+        relatedCheckbox.dispatchEvent(event);
       }
     }
   });
