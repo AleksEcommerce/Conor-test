@@ -133,3 +133,12 @@
     color: var(--color-text);
     margin: 0;
 }
+
+.b-steps-desc-title_text.m-step-1,
+.b-steps-desc-title_text.m-step-2,
+.b-steps-desc-title_text.m-step-3,
+.b-steps-desc-subtitle_text.m-step-1,
+.b-steps-desc-subtitle_text.m-step-2,
+.b-steps-desc-subtitle_text.m-step-3 {
+    display: none;
+}

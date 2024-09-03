@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const productCurrent = getProductFromLocalStorage(currentProductId);
         addProductToCartStorage(productCurrent);
         calcCartTotal();
-        switchStep(1);
+        switchStep(2);
 
         cartProductTitle.textContent = productCurrent.title;
     });
@@ -120,39 +120,55 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function switchStep(targetStep) {
-        if (targetStep < 0 || targetStep >= totalSteps) {
-            console.error('Некорректный шаг:', targetStep);
-            return;
-        }
-    
-        stepItems.forEach((step, index) => {
-            step.classList.remove('m-active', 'm-done');
-            mainContainer.classList.remove('m-step-0', 'm-step-1', 'm-step-2');
-            if (index < targetStep) {
-                step.classList.add('m-done');
-                mainContainer.classList.add(`m-step-${index}`);
-            } else if (index === targetStep) {
-                step.classList.add('m-active');
-            }
-        });
-        localStorage.setItem('builder.currentStep', JSON.stringify(targetStep));
-        mainContainer.classList.add(`m-step-${targetStep + 1}`);
+      const stepIndex = targetStep - 1; // Приведение к индексу массива (начинается с 0)
+  
+      // Проверка корректности целевого шага
+      if (stepIndex < 0 || stepIndex >= totalSteps) {
+          console.error('Некорректный шаг:', targetStep);
+          return;
+      }
+  
+      // Убираем классы 'm-active' и 'm-done' с шагов
+      stepItems.forEach((step, index) => {
+          step.classList.remove('m-active', 'm-done');
+      });
+  
+      // Удаляем все классы, соответствующие 'm-step-*' из mainContainer
+      mainContainer.classList.forEach(className => {
+          if (className.startsWith('m-step-')) {
+              mainContainer.classList.remove(className);
+          }
+      });
+  
+      // Добавляем нужные классы для шагов
+      stepItems.forEach((step, index) => {
+          if (index < stepIndex) {
+              step.classList.add('m-done');
+          } else if (index === stepIndex) {
+              step.classList.add('m-active');
+          }
+      });
+  
+      // Добавляем класс текущего шага к mainContainer
+      mainContainer.classList.add(`m-step-${targetStep}`); // Прямое соответствие шагу
+  }
+
+  document.getElementById('builder-step-next').addEventListener('click', () => {
+    let currentStep = Array.from(stepItems).findIndex(step => step.classList.contains('m-active')) + 1;
+
+    console.log(currentStep);
+    if (currentStep < totalSteps) {
+        switchStep(currentStep + 1);
     }
+});
 
-    document.getElementById('builder-step-next').addEventListener('click', () => {
-        let currentStep = Array.from(stepItems).findIndex(step => step.classList.contains('m-active'));
-        console.log(currentStep);
-        if (currentStep < totalSteps - 1) {
-            switchStep(currentStep + 1);
-        }
-    });
+document.getElementById('builder-step-prev').addEventListener('click', () => {
+    let currentStep = Array.from(stepItems).findIndex(step => step.classList.contains('m-active')) + 1;
 
-    document.getElementById('builder-step-prev').addEventListener('click', () => {
-        let currentStep = Array.from(stepItems).findIndex(step => step.classList.contains('m-active'));
-        if (currentStep > 0) {
-            switchStep(currentStep - 1);
-        }
-    });
+    if (currentStep > 1) {
+        switchStep(currentStep - 1);
+    }
+});
 
 
     // Cart
@@ -233,5 +249,5 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(`Корзина с ключом ${storageKey} очищена и установлена как пустой массив.`);
     }
 
-    switchStep(0); // Set first step as active
+    switchStep(1); // Set first step as active
   });
