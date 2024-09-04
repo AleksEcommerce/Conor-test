@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const mainContainer = document.getElementById('builder-container'); // Main container
+  // Main container
+  const mainContainer = document.getElementById('builder-container');
+
   // Steps
   const steps = document.getElementById('builder-steps');
   const stepItems = Array.from(steps.querySelectorAll('.b-steps-item'));
@@ -8,26 +10,22 @@ document.addEventListener('DOMContentLoaded', function() {
   const stepPrev = document.getElementById('builder-step-prev');
 
   // Builder Cart
-  const cart = document.querySelector('.b-builder__cart');
-  const cartSubtitle = document.querySelector('.b-builder__cart-title_subtitle');
   const cartTotal = document.getElementById('builder-cart-total');
   const cartItemsNumber = document.getElementById('builder-cart-total-items');
   const builderCartList = document.getElementById('builder-cart-list');
   
-
-  const notice = document.getElementById('b-notice'); // Notice for maximum number of charms
-  const pendantContainer = document.getElementById('pendant-builder-container'); // Container for Slider
+  // Charms and Spacers
+  const noticeCharms = document.getElementById('b-notice'); // Notice for maximum number of charms
+  const noticeSpacers = document.getElementById('b-notice-1'); // Notice for maximum number of charms
   const charmsList = document.getElementById('charms_presentation'); // Presentation for selected charms
   const spacerList = document.getElementById('spacer_presentation'); // Presentation for selected spacers
   const selectBtn = document.getElementById('b-select_btn'); // Button for selecting charms
-  
   const charmsCheckboxes = Array.from(document.querySelectorAll('.charm-checkbox')); // Checkboxes for charms
   let counterCharms = 0; // Counter for selected charms
   const maxCharms = 4; // Maximum number of charms
-
   const spacersCheckboxes = Array.from(document.querySelectorAll('.spacer-checkbox')); // Checkboxes for charms
   let counterSpacers = 0; // Counter for selected spacers
-  const maxSpacers = 3; // Maximum number of spacers
+  let maxSpacers = 3; // Maximum number of spacers
 
   charmsCheckboxes.forEach((checkbox, index) => {
     const charmImageSrc = checkbox.getAttribute('data-charm').replace(/['"]+/g, '');
@@ -45,11 +43,12 @@ document.addEventListener('DOMContentLoaded', function() {
           newCharmImage.classList.add('b-charms_presentation--item_img');
           newCharmItem.appendChild(newCharmImage);
           charmsList.appendChild(newCharmItem); // Исправлено на charmsList
-  
           addProductToCartStorage(productData);
           calcCartTotal();
           counterCharms++; 
+          maxSpacers = counterCharms - 1;
           updateCharmListClass(charmsCheckboxes, charmsList, maxCharms); // Передаем правильный контейнер
+          checkStep();
         }
       } else {
         const charmToRemove = charmsList.querySelector(`.b-charms_presentation--item_img[src="${charmImageSrc}"]`); // Исправлено на charmsList
@@ -57,18 +56,19 @@ document.addEventListener('DOMContentLoaded', function() {
           const parentItem = charmToRemove.closest('.b-charms_presentation--item');
           parentItem.classList.remove('m-showed');
           counterCharms--;
-  
+          maxSpacers = counterCharms - 1;
           removeProductFromCartStorage(productData.id);
           calcCartTotal();
+          checkStep();
           setTimeout(() => {
             parentItem.remove();
             updateCharmListClass(charmsCheckboxes, charmsList, maxCharms); // Передаем правильный контейнер
-            checkMaxCharms(counterCharms, maxCharms, charmsCheckboxes, notice); 
+            checkMaxCharms(counterCharms, maxCharms, charmsCheckboxes, noticeCharms); 
           }, 300);
         }
       }
   
-      checkMaxCharms(counterCharms, maxCharms, charmsCheckboxes, notice); 
+      checkMaxCharms(counterCharms, maxCharms, charmsCheckboxes, noticeCharms); 
     });
   });
   
@@ -106,12 +106,12 @@ document.addEventListener('DOMContentLoaded', function() {
           setTimeout(() => {
             parentItem.remove();
             updateCharmListClass(spacersCheckboxes, spacerList, maxSpacers); // Передаем правильный контейнер
-            checkMaxCharms(counterSpacers, maxSpacers, spacersCheckboxes, notice); 
+            checkMaxCharms(counterSpacers, maxSpacers, spacersCheckboxes, noticeSpacers); 
           }, 300);
         }
       }
   
-      checkMaxCharms(counterSpacers, maxSpacers, spacersCheckboxes, notice);
+      checkMaxCharms(counterSpacers, maxSpacers, spacersCheckboxes, noticeSpacers);
     });
   });
 
@@ -149,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
     addProductToCartStorage(productCurrent);
     calcCartTotal();
     switchStep(2);
+    checkStep();
   });
 
   function getProductFromLocalStorage(productId) {
@@ -199,6 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Добавляем класс текущего шага к mainContainer
     mainContainer.classList.add(`m-step-${targetStep}`); // Прямое соответствие шагу
+    localStorage.setItem('builder.currentStep', targetStep);
   }
 
   stepNext.addEventListener('click', () => {
@@ -208,15 +210,36 @@ document.addEventListener('DOMContentLoaded', function() {
     if (currentStep < totalSteps) {
         switchStep(currentStep + 1);
     }
+
+    checkStep();
   });
 
   stepPrev.addEventListener('click', () => {
       let currentStep = Array.from(stepItems).findIndex(step => step.classList.contains('m-active')) + 1;
 
+      console.log(currentStep);
       if (currentStep > 1) {
           switchStep(currentStep - 1);
       }
+
+      checkStep();
   });
+
+  function checkStep() {
+    const currentStep = parseInt(localStorage.getItem('builder.currentStep'));
+    console.log(currentStep);
+    if (currentStep === 1) {
+      stepPrev.classList.add('hidden');
+    } else if (currentStep === parseInt(totalSteps)) {
+      stepNext.classList.add('hidden');
+    } 
+    else if (counterCharms < 1) {
+      stepNext.classList.add('hidden');
+    } else {
+      stepPrev.classList.remove('hidden');
+      stepNext.classList.remove('hidden');
+    }
+  };
 
   // Cart
   function calcCartTotal() {
@@ -347,5 +370,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  switchStep(1); // Set first step as active
+  switchStep(1);
+  checkStep(); // Set first step as active
 });

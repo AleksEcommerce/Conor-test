@@ -160,7 +160,7 @@
     left: 50%;
     transform: translateX(-50%);
     bottom: 10px;
-    background-color: yellow;
+    background-color: #ffffff;
     color: black;
     padding: 5px 10px;
     border-radius: 5px;
@@ -207,7 +207,7 @@
     display: block;
     object-fit: contain;
     transition: all 0.3s ease;
-    max-width: 150%;
+    max-width: 250%;
   }
 
   .b-charms_presentation--item {

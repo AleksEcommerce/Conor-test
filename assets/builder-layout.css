@@ -41,7 +41,8 @@
     z-index: 4;
 }
 
-.l-builder.m-step-1 .l-builder-cart {
+.l-builder.m-step-1 .l-builder-cart,
+.l-builder.m-step-1 .b-charms-notice {
     display: none;
 }
 
@@ -57,7 +58,8 @@
     display: flex;
 }
 
-.l-builder.m-step-2 .l-builder-charms .b-charm__list.m-spacer {
+.l-builder.m-step-2 .l-builder-charms .b-charm__list.m-spacer,
+.l-builder.m-step-2 #b-notice-1 {
     display: none;
 }
 
@@ -77,6 +79,7 @@
     display: flex;
 }
 
-.l-builder.m-step-3 .l-builder-charms .b-charm__list.m-charms {
+.l-builder.m-step-3 .l-builder-charms .b-charm__list.m-charms,
+.l-builder.m-step-3 #b-notice {
     display: none;
 }

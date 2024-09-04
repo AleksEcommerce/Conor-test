@@ -34,7 +34,7 @@
 
 /* For Fourth  */
   .b-charms_presentation.m-4 .b-charms_presentation--item:nth-child(1) {
-    transform: translateY(-8px) translateX(-150%) rotate(6deg);
+    transform: translateY(-14px) translateX(-150%) rotate(6deg);
     left: 50%;
   }
 
@@ -44,12 +44,12 @@
   }
 
   .b-charms_presentation.m-4 .b-charms_presentation--item:nth-child(3) {
-    transform: translateY(-2px) translateX(0) rotate(-2deg);
+    transform: translateY(-4px) translateX(-2%) rotate(-2deg);
     left: 50%;
   }
 
   .b-charms_presentation.m-4 .b-charms_presentation--item:nth-child(4) {
-    transform: translateY(-8px) translateX(40%) rotate(-6deg);
+    transform: translateY(-14px) translateX(45%) rotate(-6deg);
     left: 50%;
   }
 
