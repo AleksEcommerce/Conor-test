@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const activeSlide = document.querySelector('#pendant-builder-container .swiper-slide-active');
     const currentProductId = activeSlide.getAttribute('data-product-active-id'); 
 
-    clearCartStorage();
+    
     const productCurrent = getProductFromLocalStorage(currentProductId);
     addProductToCartStorage(productCurrent);
     calcCartTotal();
@@ -227,6 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function checkStep() {
     const currentStep = parseInt(localStorage.getItem('builder.currentStep'));
+    checkMaxCharms(counterSpacers, maxSpacers, spacersCheckboxes, noticeSpacers);
     console.log(currentStep);
     if (currentStep === 1) {
       stepPrev.classList.add('hidden');
@@ -277,28 +278,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Проверяем, что данные являются массивом
     if (Array.isArray(existingData)) {
-        // Проверяем, есть ли продукт с таким id в существующих данных
-        const isDuplicate = existingData.some(existingProduct => existingProduct.id === product.id);
         const isStep1 = localStorage.getItem('builder.currentStep') === '1';
-
+        
+        // Если находимся на шаге 1, заменяем первый элемент без проверки на дубликаты
         if (isStep1) {
-            existingData[0] = product;
+            console.log('Step 1: Replacing the first element in the cart');
+            existingData[0] = product; // Заменяем первый элемент массива на новый продукт
+            console.log(existingData[0]);
             localStorage.setItem(storageKey, JSON.stringify(existingData)); // Сохраняем обновленный массив обратно в localStorage
-            addChildToCartStorage(product);
+            addChildToCartStorage(product, 0); // Добавляем элемент в DOM
             return;
         }
 
-        // Если дубликатов нет, добавляем продукт в корзину
+        // Если не на первом шаге, продолжаем с проверкой на дубликаты
+        const isDuplicate = existingData.some(existingProduct => existingProduct.id === product.id);
         if (!isDuplicate) {
             existingData.push(product);
-            // Сохраняем обновленный массив обратно в localStorage
-            localStorage.setItem(storageKey, JSON.stringify(existingData));
+            localStorage.setItem(storageKey, JSON.stringify(existingData)); // Сохраняем обновленный массив обратно в localStorage
 
             // Создаем новый элемент списка и добавляем в DOM
             addChildToCartStorage(product);
-
-            
-
             console.log(`Продукт добавлен: ${product.title}`);
         } else {
             console.log(`Продукт с id ${product.id} уже есть в корзине.`);
@@ -308,9 +307,9 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem(storageKey, JSON.stringify([product]));
         console.log(`Корзина была пустой, продукт добавлен: ${product.title}`);
     }
-}
+  }
 
-  function addChildToCartStorage(product) {
+  function addChildToCartStorage(product, index = 1) {
     const listItem = document.createElement('li');
     listItem.className = 'b-builder__cart-list_item';
     listItem.setAttribute('data-product-id', product.id);
@@ -323,7 +322,13 @@ document.addEventListener('DOMContentLoaded', function() {
           </svg>
         </span>
     `;
-    builderCartList.appendChild(listItem);
+    if (builderCartList.children.length > 0 && index === 0) {
+      // Заменяем первый элемент в списке на новый элемент
+      builderCartList.replaceChild(listItem, builderCartList.children[0]);
+    } else {
+        // Если список пустой, просто добавляем элемент
+        builderCartList.appendChild(listItem);
+    }
     // Добавляем обработчик события на кнопку удаления
     listItem.querySelector('.b-builder__cart-list_item-remove').addEventListener('click', function() {
       removeProductFromCartStorage(product.id);
@@ -385,4 +390,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
   switchStep(1);
   checkStep(); // Set first step as active
+  clearCartStorage();
 });
