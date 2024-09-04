@@ -32,10 +32,25 @@
 
 .b-steps-nav-item {
     position: absolute;
+    top: 5px;
+    cursor: pointer;
+}
+
+.b-steps-nav-item svg {
+    transform: translateY(5px);
+}
+
+.b-steps-nav-item.m-hide {
+    display: none;
 }
 
 .b-steps-nav-item.m-back {
     left: 0;
+}
+
+.b-steps-nav-item.m-back svg {
+    transform: translateY(-4px);
+    rotate: 180deg;
 }
 
 .b-steps-nav-item.m-next {
@@ -158,4 +173,8 @@
 .b-steps-desc-subtitle_text.m-step-2,
 .b-steps-desc-subtitle_text.m-step-3 {
     display: none;
+}
+
+.b-steps-nav-item__link {
+
 }

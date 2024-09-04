@@ -300,6 +300,11 @@
   cursor: pointer;
 }
 
+.b-builder__cart-list_item-remove svg,
+.b-builder__cart-list_item-remove svg path {
+  fill: #9a9fb3;
+}
+
 .b-builder__cart-list_item-title {
   font-size: 18px;
   font-weight: bold;

@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const steps = document.getElementById('builder-steps');
   const stepItems = Array.from(steps.querySelectorAll('.b-steps-item'));
   const totalSteps = stepItems.length;
+  const stepNext = document.getElementById('builder-step-next');
+  const stepPrev = document.getElementById('builder-step-prev');
 
   // Builder Cart
   const cart = document.querySelector('.b-builder__cart');
@@ -12,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const cartItemsNumber = document.getElementById('builder-cart-total-items');
   const builderCartList = document.getElementById('builder-cart-list');
   
-  let btnsRemoveProductCart = document.querySelectorAll('.b-builder__cart-list_item-remove');
 
   const notice = document.getElementById('b-notice'); // Notice for maximum number of charms
   const pendantContainer = document.getElementById('pendant-builder-container'); // Container for Slider
@@ -152,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
     mainContainer.classList.add(`m-step-${targetStep}`); // Прямое соответствие шагу
   }
 
-  document.getElementById('builder-step-next').addEventListener('click', () => {
+  stepNext.addEventListener('click', () => {
     let currentStep = Array.from(stepItems).findIndex(step => step.classList.contains('m-active')) + 1;
 
     console.log(currentStep);
@@ -161,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  document.getElementById('builder-step-prev').addEventListener('click', () => {
+  stepPrev.addEventListener('click', () => {
       let currentStep = Array.from(stepItems).findIndex(step => step.classList.contains('m-active')) + 1;
 
       if (currentStep > 1) {
@@ -221,7 +222,11 @@ document.addEventListener('DOMContentLoaded', function() {
             listItem.innerHTML = `
                 <span class="b-builder__cart-list_item-title">${product.title}</span>
                 <span class="b-builder__cart-list_item-price">${product.price}</span>
-                <span class="b-builder__cart-list_item-remove" data-product-id="${product.id}">X</span>
+                <span class="b-builder__cart-list_item-remove" data-product-id="${product.id}">
+                  <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.5 4.547 11.453 3.5 8 6.953 4.547 3.5 3.5 4.547 6.953 8 3.5 11.453 4.547 12.5 8 9.047l3.453 3.453 1.047-1.047L9.047 8 12.5 4.547z" fill="#010101"></path>
+                  </svg>
+                </span>
             `;
             builderCartList.appendChild(listItem);
 
@@ -275,11 +280,12 @@ document.addEventListener('DOMContentLoaded', function() {
   // Remove product from cart
   builderCartList.addEventListener('click', function(event) {
     // Проверяем, что клик был на кнопке удаления
-    if (event.target.classList.contains('b-builder__cart-list_item-remove')) {
-      const productId = event.target.getAttribute('data-product-id');
+    const removeButton = event.target.closest('.b-builder__cart-list_item-remove');
+    if (removeButton) {
+      const productId = removeButton.getAttribute('data-product-id');
       console.log(productId);
       removeProductFromCartStorage(productId);
-      calcCartTotal();
+      calcCartTotal(); 
   
       // Находим связанный чекбокс по data-product-id и снимаем отметку
       const relatedCheckbox = document.querySelector(`.charm-checkbox[data-product-id="${productId}"]`);
