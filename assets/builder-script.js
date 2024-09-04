@@ -29,11 +29,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
   charmsCheckboxes.forEach((checkbox, index) => {
     const charmImageSrc = checkbox.getAttribute('data-charm').replace(/['"]+/g, '');
-    checkbox.addEventListener('change', function() {
-      const productData = getProductFromLocalStorage(this.getAttribute('data-product-id'));
-      if (this.checked) {
-        if (counterCharms < maxCharms) {
+
+    checkbox.addEventListener('click', function() {
+      const getSecondProducts = JSON.parse(localStorage.getItem('builder.secondStepProducts'));
+      // if (this.checked) {
+        if (getSecondProducts.length < maxCharms) {
+          const productData = getProductFromLocalStorage(this.getAttribute('data-product-id'));
+          productData.secondProduct = counterCharms + 1;
+          getSecondProducts.push(productData);
+          localStorage.setItem('builder.secondStepProducts', JSON.stringify(getSecondProducts));
+
           const newCharmItem = document.createElement('div');
+          newCharmItem.setAttribute('data-product-id', productData.id);
           newCharmItem.classList.add('b-charms_presentation--item', `m-${counterCharms + 1}`);
           setTimeout(() => {
             newCharmItem.classList.add('m-showed');
@@ -42,31 +49,16 @@ document.addEventListener('DOMContentLoaded', function() {
           newCharmImage.setAttribute('src', charmImageSrc);
           newCharmImage.classList.add('b-charms_presentation--item_img');
           newCharmItem.appendChild(newCharmImage);
-          charmsList.appendChild(newCharmItem); // Исправлено на charmsList
+          charmsList.appendChild(newCharmItem);
+
           addProductToCartStorage(productData);
+
           calcCartTotal();
           counterCharms++; 
           maxSpacers = counterCharms - 1;
-          updateCharmListClass(charmsCheckboxes, charmsList, maxCharms); // Передаем правильный контейнер
+          updateCharmListClass(getSecondProducts, charmsList, maxCharms); // Передаем правильный контейнер
           checkStep();
         }
-      } else {
-        const charmToRemove = charmsList.querySelector(`.b-charms_presentation--item_img[src="${charmImageSrc}"]`); // Исправлено на charmsList
-        if (charmToRemove) {
-          const parentItem = charmToRemove.closest('.b-charms_presentation--item');
-          parentItem.classList.remove('m-showed');
-          counterCharms--;
-          maxSpacers = counterCharms - 1;
-          removeProductFromCartStorage(productData.id);
-          calcCartTotal();
-          checkStep();
-          setTimeout(() => {
-            parentItem.remove();
-            updateCharmListClass(charmsCheckboxes, charmsList, maxCharms); // Передаем правильный контейнер
-            checkMaxCharms(counterCharms, maxCharms, charmsCheckboxes, noticeCharms); 
-          }, 300);
-        }
-      }
   
       checkMaxCharms(counterCharms, maxCharms, charmsCheckboxes, noticeCharms); 
     });
@@ -118,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   
   function updateCharmListClass(checkboxes, presentationDiv, maxItems) {
-    const selectedProducts = checkboxes.filter(checkbox => checkbox.checked).length;
+    const selectedProducts = checkboxes.length;
     presentationDiv.className = 'b-charms_presentation';
 
     if (selectedProducts > 0 && selectedProducts <= maxItems) {
@@ -244,33 +236,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Cart
   function calcCartTotal() {
-      // Получаем данные из localStorage по ключу 'builder.builderCart'
-      const cartData = JSON.parse(localStorage.getItem('builder.builderCart')) || [];
+    // Получаем данные из localStorage по ключу 'builder.builderCart'
+    const cartData = JSON.parse(localStorage.getItem('builder.builderCart')) || [];
 
-      // Проверяем, что данные представляют собой массив объектов
-      if (!Array.isArray(cartData)) {
-          console.error('Данные в builder.builderCart не являются массивом.');
-          return 0;
-      }
+    // Проверяем, что данные представляют собой массив объектов
+    if (!Array.isArray(cartData)) {
+        console.error('Данные в builder.builderCart не являются массивом.');
+        return 0;
+    }
 
-      // Суммируем значения price всех продуктов
-      const total = cartData.reduce((sum, item) => {
-          // Проверяем, есть ли поле price и является ли оно числом
-          if (item.price && typeof item.price === 'number') {
-              return sum + item.price;
-          } else {
-              console.warn('Продукт без корректного поля price:', item);
-              return sum;
-          }
-      }, 0); // Начальное значение суммы равно 0
+    // Суммируем значения price всех продуктов с учетом количества (qty)
+    const total = cartData.reduce((sum, item) => {
+        // Проверяем, есть ли поле price и является ли оно числом
+        if (item.price && typeof item.price === 'number') {
+            // Учитываем количество (qty) каждого товара
+            const qty = item.qty || 1; // Если qty не указано, считаем его равным 1
+            return sum + (item.price * qty);
+        } else {
+            console.warn('Продукт без корректного поля price:', item);
+            return sum;
+        }
+    }, 0); // Начальное значение суммы равно 0
 
-      let catLengthText = cartData.length > 1 ? ' items' : ' item';
-      console.log(total);
-      
-      cartTotal.textContent = "$" + total;
-      cartItemsNumber.textContent = cartData.length + catLengthText;
-      return total;
-  } 
+    // Подсчитываем общее количество всех товаров в корзине
+    const totalItems = cartData.reduce((sum, item) => sum + (item.qty || 1), 0);
+
+    let catLengthText = totalItems > 1 ? ' items' : ' item';
+    console.log(total);
+    
+    cartTotal.textContent = "$" + total.toFixed(2); // Форматируем сумму до двух знаков после запятой
+    cartItemsNumber.textContent = totalItems + catLengthText;
+    return total;
+}
 
   function addProductToCartStorage(product) {
     const storageKey = `builder.builderCart`; // Используем единый ключ для корзины
@@ -293,14 +290,30 @@ document.addEventListener('DOMContentLoaded', function() {
         // Если не на первом шаге, продолжаем с проверкой на дубликаты
         const isDuplicate = existingData.some(existingProduct => existingProduct.id === product.id);
         if (!isDuplicate) {
+            // Инициализируем количество продукта, если его еще нет
+            product.qty = 1;
             existingData.push(product);
             localStorage.setItem(storageKey, JSON.stringify(existingData)); // Сохраняем обновленный массив обратно в localStorage
-
+        
             // Создаем новый элемент списка и добавляем в DOM
             addChildToCartStorage(product);
             console.log(`Продукт добавлен: ${product.title}`);
         } else {
             console.log(`Продукт с id ${product.id} уже есть в корзине.`);
+            existingData.forEach((existingProduct, index) => {
+                if (existingProduct.id === product.id) {
+                    // Увеличиваем количество, если продукт уже существует
+                    existingProduct.qty = (existingProduct.qty || 1) + 1; // Инкремент количества
+        
+                    // Обновляем продукт в корзине
+                    existingData[index] = existingProduct;
+                    localStorage.setItem(storageKey, JSON.stringify(existingData)); // Сохраняем обновленный массив обратно в localStorage
+                    console.log(`Продукт обновлен: ${existingProduct.title} (QTY: ${existingProduct.qty})`);
+        
+                    // Обновляем DOM элемент с учетом нового количества
+                    updateCartItemInDOM(existingProduct);
+                }
+            });
         }
     } else {
         // Если данные не являются массивом, создаем массив с новым продуктом
@@ -309,10 +322,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  function updateCartItemInDOM(product) {
+    // Находим существующий элемент в DOM
+    const listItem = document.querySelector(`.b-builder__cart-list_item[data-product-id="${product.id}"]`);
+    if (listItem) {
+        if (product.qty > 0) {
+            // Обновляем текст количества (QTY) и другой информации
+            const qtyText = product.qty > 1 ? `<span class="b-builder__cart-list_item-qty">QTY: ${product.qty}</span>` : '';
+            listItem.setAttribute('data-product-qty', product.qty);
+            listItem.innerHTML = `
+                <span class="b-builder__cart-list_item-title">${product.title}</span>
+                <span class="b-builder__cart-list_item-price">${product.price}</span>
+                ${qtyText}
+                <span class="b-builder__cart-list_item-remove" data-product-id="${product.id}">
+                  <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.5 4.547 11.453 3.5 8 6.953 4.547 3.5 3.5 4.547 6.953 8 3.5 11.453 4.547 12.5 8 9.047l3.453 3.453 1.047-1.047L9.047 8 12.5 4.547z" fill="#010101"></path>
+                  </svg>
+                </span>
+            `;
+        } else {
+            // Удаляем элемент из DOM, если количество стало 0
+            listItem.remove();
+        }
+    }
+}
+
   function addChildToCartStorage(product, index = 1) {
     const listItem = document.createElement('li');
     listItem.className = 'b-builder__cart-list_item';
     listItem.setAttribute('data-product-id', product.id);
+    listItem.setAttribute('data-product-qty', product.qty || 1);
     listItem.innerHTML = `
         <span class="b-builder__cart-list_item-title">${product.title}</span>
         <span class="b-builder__cart-list_item-price">${product.price}</span>
@@ -330,10 +369,10 @@ document.addEventListener('DOMContentLoaded', function() {
         builderCartList.appendChild(listItem);
     }
     // Добавляем обработчик события на кнопку удаления
-    listItem.querySelector('.b-builder__cart-list_item-remove').addEventListener('click', function() {
-      removeProductFromCartStorage(product.id);
-      calcCartTotal();
-    });
+    // listItem.querySelector('.b-builder__cart-list_item-remove').addEventListener('click', function() {
+    //   removeProductFromCartStorage(product.id);
+    //   calcCartTotal();
+    // });
   }
 
   function removeProductFromCartStorage(productId) {
@@ -342,22 +381,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Проверяем, что данные являются массивом
     if (Array.isArray(existingData)) {
-        // Фильтруем продукты, исключая продукт с указанным id
-        const updatedData = existingData.filter(product => product.id !== productId);
+        // Найдем продукт в корзине по ID
+        const productIndex = existingData.findIndex(product => product.id === productId);
 
-        // Сохраняем обновленный массив обратно в localStorage
-        localStorage.setItem(storageKey, JSON.stringify(updatedData));
-        console.log(`Продукт с id ${productId} удален из корзины.`);
+        if (productIndex !== -1) {
+            const product = existingData[productIndex];
 
-        // Удаляем элемент из DOM, если он существует
-        const listItem = document.querySelector(`.b-builder__cart-list_item[data-product-id="${productId}"]`);
-        if (listItem) {
-            listItem.remove();
+            // Уменьшаем количество или удаляем продукт, если qty равен 1
+            if (product.qty > 1) {
+                product.qty -= 1; // Уменьшаем количество на 1
+                existingData[productIndex] = product; // Обновляем продукт в корзине
+                console.log(`Количество продукта ${product.title} уменьшено до ${product.qty}.`);
+            } else {
+                // Если количество равно 1, удаляем продукт из корзины
+                existingData.splice(productIndex, 1); // Удаляем продукт
+                console.log(`Продукт с id ${productId} удален из корзины.`);
+            }
+
+            // Сохраняем обновленный массив обратно в localStorage
+            localStorage.setItem(storageKey, JSON.stringify(existingData));
+
+            // Обновляем или удаляем элемент из DOM
+            updateCartItemInDOM(product);
         }
     } else {
         console.log('Корзина пуста или данные повреждены.');
     }
-  }
+}
+
+
 
   function clearCartStorage() {
       const storageKey = `builder.builderCart`;
@@ -370,24 +422,47 @@ document.addEventListener('DOMContentLoaded', function() {
   builderCartList.addEventListener('click', function(event) {
     // Проверяем, что клик был на кнопке удаления
     const removeButton = event.target.closest('.b-builder__cart-list_item-remove');
+
     if (removeButton) {
       const productId = removeButton.getAttribute('data-product-id');
-      console.log(productId);
-      removeProductFromCartStorage(productId);
-      calcCartTotal(); 
-  
-      // Находим связанный чекбокс по data-product-id и снимаем отметку
-      const relatedCheckbox = document.querySelector(`.additional-charm[data-product-id="${productId}"]`);
-      if (relatedCheckbox) {
-        relatedCheckbox.checked = false;
-  
-        // Инициализируем событие 'change' на чекбоксе
-        const event = new Event('change');
-        relatedCheckbox.dispatchEvent(event);
+      const qtyProductItem = removeButton.closest('.b-builder__cart-list_item');
+      if (qtyProductItem && qtyProductItem.hasAttribute('data-product-qty')) {
+        let qty = parseInt(qtyProductItem.getAttribute('data-product-qty'), 10);
+
+        
+        const getSecondProducts = JSON.parse(localStorage.getItem('builder.secondStepProducts')) || [];
+        const productIndex = getSecondProducts.findIndex(product => product.id === productId);
+        if (productIndex !== -1) {
+          getSecondProducts.splice(productIndex, 1); // Удаляем только первый найденный элемент
+        }
+        localStorage.setItem('builder.secondStepProducts', JSON.stringify(getSecondProducts));
+        const charmToRemove = charmsList.querySelector(`[data-product-id="${productId}"]`);
+        charmToRemove.classList.remove('m-showed');
+        counterCharms--;
+        maxSpacers = counterCharms - 1;
+        
+        setTimeout(() => {
+          charmToRemove.remove();
+          updateCharmListClass(getSecondProducts, charmsList, maxCharms); // Передаем правильный контейнер
+          checkMaxCharms(counterCharms, maxCharms, charmsCheckboxes, noticeCharms); 
+        }, 300);
+
+        if (qty > 1) {
+          // Уменьшаем количество на 1 и обновляем атрибут в DOM
+          qty -= 1;
+          // qtyProductItem.setAttribute('data-product-id', qty);
+          removeProductFromCartStorage(productId);  
+          calcCartTotal(); 
+        } else {
+          removeProductFromCartStorage(productId);
+          calcCartTotal(); 
+          qtyProductItem.remove();
+        }
       }
     }
   });
 
+  // localStorage.clear();
   switchStep(1);
   checkStep(); // Set first step as active
   clearCartStorage();

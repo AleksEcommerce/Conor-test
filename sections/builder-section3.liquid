@@ -120,36 +120,22 @@
     <div class="b-charm__list m-charms">
       {% for product in section.settings.select_second_product %}
         {% assign product = all_products[product] %}
-        <div class="b-charm__list-item">
-          <label for="charm-{{ forloop.index }}">
-            <input 
-              type="checkbox" 
-              id="charm-{{ forloop.index }}" 
-              name="charm-{{ forloop.index }}" 
-              class="charm-checkbox additional-charm" 
-              data-charm="{{ product.metafields.custom.charm_builder_image | image_url }}"
-              data-product-id="{{ product.variants.first.id }}"
-            >
-            <img class="b-charm__list-item_img" src="{{ product.metafields.custom.charm_builder_image | img_url: 'medium' }}" alt="{{ product.title }}">
-          </label>
+        <div class="b-charm__list-item charm-checkbox" 
+          data-charm="{{ product.metafields.custom.charm_builder_image | image_url }}" 
+          data-product-id="{{ product.variants.first.id }}"
+        >
+          <img class="b-charm__list-item_img" src="{{ product.metafields.custom.charm_builder_image | img_url: 'medium' }}" alt="{{ product.title }}">
         </div>
       {% endfor %}
     </div>
     <div class="b-charm__list m-spacer">
       {% for product in section.settings.select_third_product %}
         {% assign product = all_products[product] %}
-        <div class="b-charm__list-item">
-          <label for="spacer-{{ forloop.index }}">
-            <input 
-              type="checkbox" 
-              id="spacer-{{ forloop.index }}" 
-              name="spacer-{{ forloop.index }}" 
-              class="spacer-checkbox additional-charm" 
-              data-charm="{{ product.metafields.custom.charm_builder_image | image_url }}"
-              data-product-id="{{ product.variants.first.id }}"
-            >
-            <img class="b-charm__list-item_img" src="{{ product.metafields.custom.charm_builder_image | img_url: 'medium' }}" alt="{{ product.title }}">
-          </label>
+        <div class="b-charm__list-item spacer-checkbox" 
+          data-charm="{{ product.metafields.custom.charm_builder_image | image_url }}" 
+          data-product-id="{{ product.variants.first.id }}"
+        >
+          <img class="b-charm__list-item_img" src="{{ product.metafields.custom.charm_builder_image | img_url: 'medium' }}" alt="{{ product.title }}">
         </div>
       {% endfor %}
     </div>
@@ -179,7 +165,8 @@
             "title": "{{ product.title | escape }}",
             "price": {{ product.variants.first.price | divided_by: 100 }},
             "image": "{{ product.featured_image | img_url: 'small' }}",
-            "variant_title": "{{ product.variants.first.title | escape }}"
+            "variant_title": "{{ product.variants.first.title | escape }}",
+            "qty": 1
         }{% if forloop.last == false %},{% endif %}
       {% endfor %}
     ];
@@ -191,7 +178,8 @@
             "title": "{{ product.title | escape }}",
             "price": {{ product.variants.first.price | divided_by: 100 }},
             "image": "{{ product.featured_image | img_url: 'small' }}",
-            "variant_title": "{{ product.variants.first.title | escape }}"
+            "variant_title": "{{ product.variants.first.title | escape }}",
+            "qty": 1
         }{% if forloop.last == false %},{% endif %}
       {% endfor %}
     ];
@@ -203,7 +191,8 @@
             "title": "{{ product.title | escape }}",
             "price": {{ product.variants.first.price | divided_by: 100 }},
             "image": "{{ product.featured_image | img_url: 'small' }}",
-            "variant_title": "{{ product.variants.first.title | escape }}"
+            "variant_title": "{{ product.variants.first.title | escape }}",
+            "qty": 1
         }{% if forloop.last == false %},{% endif %}
       {% endfor %}
     ];
@@ -228,8 +217,9 @@
       // Сохраняем объединенный массив без дубликатов в localStorage
       localStorage.setItem(storageKey, JSON.stringify(uniqueData));
     }
-
+    localStorage.clear();
     setLocalStorageData([...selectedProductsFirst, ...selectedProductsSecond, ...selectedProductsThird], 'selectedProducts');
+    setLocalStorageData([], 'secondStepProducts');
   });
 </script>
 

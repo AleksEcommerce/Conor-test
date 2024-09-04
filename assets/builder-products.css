@@ -124,26 +124,33 @@
     border-radius: 10px;
   }
 
-  .b-charm__list-item input[type='checkbox'] {
+  .b-charm__list-item {
+    position: relative;
+    width: var(--width-chars-item);
+    height: var(--height-chars-item);
+    cursor: pointer;
+  }
+
+  /* .b-charm__list-item input[type='checkbox'] {
     visibility: hidden;
     width: 0;
     height: 0;
     position: absolute;
-  }
+  } */
 
-  .b-charm__list-item input[type='checkbox']:checked + img {
+  /* .b-charm__list-item input[type='checkbox']:checked + img {
     pointer-events: none;
     opacity: 0.5;
     transform: translateY(-10px);
-  }
+  } */
 
-  .b-charm__list-item label {
+  /* .b-charm__list-item label {
     display: block;
     position: relative;
     cursor: pointer;
     width: var(--width-chars-item);
     height: var(--height-chars-item);
-  }
+  } */
 
   .b-charm__list-item_img {
     position: absolute;
