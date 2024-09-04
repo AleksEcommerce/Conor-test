@@ -28,8 +28,8 @@
           "chain-2-copy",
           "chain-2-copy-copy"
         ],
-        "step_title_1": "Lorem Ipsum",
-        "step_subtitle_1": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "step_title_1": "Step 1 Title",
+        "step_subtitle_1": "Step 1 Subtitle Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
         "select_second_product": [
           "charm1",
           "charm2",
@@ -40,10 +40,17 @@
           "charm7",
           "charm8"
         ],
-        "step_title_2": "Lorem Ipsum",
-        "step_subtitle_2": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-        "step_title_3": "Lorem Ipsum",
-        "step_subtitle_3": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+        "step_title_2": "Step 2 Title",
+        "step_subtitle_2": "Step 2 Subtitle Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        "select_third_product": [
+          "spacer",
+          "spacer-copy",
+          "spacer-copy-copy",
+          "spacer-copy-copy-copy",
+          "spacer-copy-copy-copy-copy"
+        ],
+        "step_title_3": "Step 3 Title",
+        "step_subtitle_3": "Step 3 Subtitle Lorem Ipsum is simply dummy text of the printing and typesetting industry."
       }
     }
   },
