@@ -279,6 +279,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (Array.isArray(existingData)) {
         // Проверяем, есть ли продукт с таким id в существующих данных
         const isDuplicate = existingData.some(existingProduct => existingProduct.id === product.id);
+        const isStep1 = localStorage.getItem('builder.currentStep') === '1';
+
+        if (isStep1) {
+            existingData[0] = product;
+            localStorage.setItem(storageKey, JSON.stringify(existingData)); // Сохраняем обновленный массив обратно в localStorage
+            addChildToCartStorage(product);
+            return;
+        }
 
         // Если дубликатов нет, добавляем продукт в корзину
         if (!isDuplicate) {
@@ -287,25 +295,9 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem(storageKey, JSON.stringify(existingData));
 
             // Создаем новый элемент списка и добавляем в DOM
-            const listItem = document.createElement('li');
-            listItem.className = 'b-builder__cart-list_item';
-            listItem.setAttribute('data-product-id', product.id);
-            listItem.innerHTML = `
-                <span class="b-builder__cart-list_item-title">${product.title}</span>
-                <span class="b-builder__cart-list_item-price">${product.price}</span>
-                <span class="b-builder__cart-list_item-remove" data-product-id="${product.id}">
-                  <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12.5 4.547 11.453 3.5 8 6.953 4.547 3.5 3.5 4.547 6.953 8 3.5 11.453 4.547 12.5 8 9.047l3.453 3.453 1.047-1.047L9.047 8 12.5 4.547z" fill="#010101"></path>
-                  </svg>
-                </span>
-            `;
-            builderCartList.appendChild(listItem);
+            addChildToCartStorage(product);
 
-            // Добавляем обработчик события на кнопку удаления
-            listItem.querySelector('.b-builder__cart-list_item-remove').addEventListener('click', function() {
-                removeProductFromCartStorage(product.id);
-                calcCartTotal();
-            });
+            
 
             console.log(`Продукт добавлен: ${product.title}`);
         } else {
@@ -317,6 +309,27 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(`Корзина была пустой, продукт добавлен: ${product.title}`);
     }
 }
+
+  function addChildToCartStorage(product) {
+    const listItem = document.createElement('li');
+    listItem.className = 'b-builder__cart-list_item';
+    listItem.setAttribute('data-product-id', product.id);
+    listItem.innerHTML = `
+        <span class="b-builder__cart-list_item-title">${product.title}</span>
+        <span class="b-builder__cart-list_item-price">${product.price}</span>
+        <span class="b-builder__cart-list_item-remove" data-product-id="${product.id}">
+          <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12.5 4.547 11.453 3.5 8 6.953 4.547 3.5 3.5 4.547 6.953 8 3.5 11.453 4.547 12.5 8 9.047l3.453 3.453 1.047-1.047L9.047 8 12.5 4.547z" fill="#010101"></path>
+          </svg>
+        </span>
+    `;
+    builderCartList.appendChild(listItem);
+    // Добавляем обработчик события на кнопку удаления
+    listItem.querySelector('.b-builder__cart-list_item-remove').addEventListener('click', function() {
+      removeProductFromCartStorage(product.id);
+      calcCartTotal();
+    });
+  }
 
   function removeProductFromCartStorage(productId) {
     const storageKey = `builder.builderCart`; // Используем единый ключ для корзины
