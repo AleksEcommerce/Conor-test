@@ -83,7 +83,8 @@
             </div>
           {% endfor %}
         </div>
-        <div class="b-charms_presentation"></div>
+        <div id="charms_presentation" class="b-charms_presentation"></div>
+        <div id="spacer_presentation" class="b-charms_presentation"></div>
         <!-- Навигационные кнопки -->
         <div class="swiper-button-next b-chain_nav-btn m-next">
           
@@ -111,6 +112,7 @@
         <span id="builder-cart-total" class="b-builder__cart-total_price">$0.00</span>
       </div>
     </div>
+    <span id="builder-cart-checkout" class="b-builder__cart-checkout">ADD CHARM BUILDER TO CART</span>
   </article>
 
   <article class="l-builder-charms">
@@ -193,6 +195,18 @@
       {% endfor %}
     ];
 
+    var selectedProductsThird = [
+      {% for product in section.settings.select_third_product %}
+        {
+            "id": "{{ product.variants.first.id }}",
+            "title": "{{ product.title | escape }}",
+            "price": {{ product.variants.first.price | divided_by: 100 }},
+            "image": "{{ product.featured_image | img_url: 'small' }}",
+            "variant_title": "{{ product.variants.first.title | escape }}"
+        }{% if forloop.last == false %},{% endif %}
+      {% endfor %}
+    ];
+
     // Обновленная функция для объединения и записи данных в localStorage
     function setLocalStorageData(productsArray, name) {
       const storageKey = `builder.${name}`;
@@ -214,7 +228,7 @@
       localStorage.setItem(storageKey, JSON.stringify(uniqueData));
     }
 
-    setLocalStorageData([...selectedProductsFirst, ...selectedProductsSecond], 'selectedProducts');
+    setLocalStorageData([...selectedProductsFirst, ...selectedProductsSecond, ...selectedProductsThird], 'selectedProducts');
   });
 </script>
 

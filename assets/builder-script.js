@@ -17,21 +17,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const notice = document.getElementById('b-notice'); // Notice for maximum number of charms
   const pendantContainer = document.getElementById('pendant-builder-container'); // Container for Slider
-  const charmsList = document.querySelector('.b-charms_presentation'); // Presentation for selected charms
+  const charmsList = document.getElementById('charms_presentation'); // Presentation for selected charms
+  const spacerList = document.getElementById('spacer_presentation'); // Presentation for selected spacers
   const selectBtn = document.getElementById('b-select_btn'); // Button for selecting charms
   
-  const checkboxes = Array.from(document.querySelectorAll('.charm-checkbox')); // Checkboxes for charms
-  let counter = 0; // Counter for selected charms
+  const charmsCheckboxes = Array.from(document.querySelectorAll('.charm-checkbox')); // Checkboxes for charms
+  let counterCharms = 0; // Counter for selected charms
   const maxCharms = 4; // Maximum number of charms
 
-  checkboxes.forEach((checkbox, index) => {
+  const spacersCheckboxes = Array.from(document.querySelectorAll('.spacer-checkbox')); // Checkboxes for charms
+  let counterSpacers = 0; // Counter for selected spacers
+  const maxSpacers = 3; // Maximum number of spacers
+
+  charmsCheckboxes.forEach((checkbox, index) => {
     const charmImageSrc = checkbox.getAttribute('data-charm').replace(/['"]+/g, '');
     checkbox.addEventListener('change', function() {
       const productData = getProductFromLocalStorage(this.getAttribute('data-product-id'));
       if (this.checked) {
-        if (counter < maxCharms) {
+        if (counterCharms < maxCharms) {
           const newCharmItem = document.createElement('div');
-          newCharmItem.classList.add('b-charms_presentation--item', `m-${counter + 1}`);
+          newCharmItem.classList.add('b-charms_presentation--item', `m-${counterCharms + 1}`);
           setTimeout(() => {
             newCharmItem.classList.add('m-showed');
           }, 300);
@@ -39,46 +44,90 @@ document.addEventListener('DOMContentLoaded', function() {
           newCharmImage.setAttribute('src', charmImageSrc);
           newCharmImage.classList.add('b-charms_presentation--item_img');
           newCharmItem.appendChild(newCharmImage);
-          charmsList.appendChild(newCharmItem); 
-
+          charmsList.appendChild(newCharmItem); // Исправлено на charmsList
+  
           addProductToCartStorage(productData);
           calcCartTotal();
-          counter++; 
-          updateCharmListClass();
+          counterCharms++; 
+          updateCharmListClass(charmsCheckboxes, charmsList, maxCharms); // Передаем правильный контейнер
         }
       } else {
-        const charmToRemove = charmsList.querySelector(`.b-charms_presentation--item_img[src="${charmImageSrc}"]`);
+        const charmToRemove = charmsList.querySelector(`.b-charms_presentation--item_img[src="${charmImageSrc}"]`); // Исправлено на charmsList
         if (charmToRemove) {
           const parentItem = charmToRemove.closest('.b-charms_presentation--item');
           parentItem.classList.remove('m-showed');
-          counter--;
-
+          counterCharms--;
+  
           removeProductFromCartStorage(productData.id);
           calcCartTotal();
           setTimeout(() => {
             parentItem.remove();
-            updateCharmListClass();
-            checkMaxCharms(); 
+            updateCharmListClass(charmsCheckboxes, charmsList, maxCharms); // Передаем правильный контейнер
+            checkMaxCharms(counterCharms, maxCharms, charmsCheckboxes, notice); 
           }, 300);
         }
       }
-
   
-      checkMaxCharms();
+      checkMaxCharms(counterCharms, maxCharms, charmsCheckboxes, notice); 
     });
   });
   
-  function updateCharmListClass() {
-    const selectedCharms = checkboxes.filter(checkbox => checkbox.checked).length;
-    charmsList.className = 'b-charms_presentation';
+  spacersCheckboxes.forEach((checkbox, index) => {
+    const spacerImageSrc = checkbox.getAttribute('data-charm').replace(/['"]+/g, '');
+    checkbox.addEventListener('change', function() {
+      const productData = getProductFromLocalStorage(this.getAttribute('data-product-id'));
+      if (this.checked) {
+        if (counterSpacers < maxSpacers) {
+          const newSpacerItem = document.createElement('div');
+          newSpacerItem.classList.add('b-charms_presentation--item', `m-${counterSpacers + 1}`);
+          setTimeout(() => {
+            newSpacerItem.classList.add('m-showed');
+          }, 300);
+          const newSpacerImage = document.createElement('img');
+          newSpacerImage.setAttribute('src', spacerImageSrc);
+          newSpacerImage.classList.add('b-charms_presentation--item_img');
+          newSpacerItem.appendChild(newSpacerImage);
+          spacerList.appendChild(newSpacerItem); // Исправлено на spacerList
+  
+          addProductToCartStorage(productData);
+          calcCartTotal();
+          counterSpacers++; 
+          updateCharmListClass(spacersCheckboxes, spacerList, maxSpacers); // Передаем правильный контейнер
+        }
+      } else {
+        const spacerToRemove = spacerList.querySelector(`.b-charms_presentation--item_img[src="${spacerImageSrc}"]`); // Исправлено на spacerList
+        if (spacerToRemove) {
+          const parentItem = spacerToRemove.closest('.b-charms_presentation--item');
+          parentItem.classList.remove('m-showed');
+          counterSpacers--;
+  
+          removeProductFromCartStorage(productData.id);
+          calcCartTotal();
+          setTimeout(() => {
+            parentItem.remove();
+            updateCharmListClass(spacersCheckboxes, spacerList, maxSpacers); // Передаем правильный контейнер
+            checkMaxCharms(counterSpacers, maxSpacers, spacersCheckboxes, notice); 
+          }, 300);
+        }
+      }
+  
+      checkMaxCharms(counterSpacers, maxSpacers, spacersCheckboxes, notice);
+    });
+  });
 
-    if (selectedCharms > 0 && selectedCharms <= maxCharms) {
-      charmsList.classList.add(`m-${selectedCharms}`);
+
+  
+  function updateCharmListClass(checkboxes, presentationDiv, maxItems) {
+    const selectedProducts = checkboxes.filter(checkbox => checkbox.checked).length;
+    presentationDiv.className = 'b-charms_presentation';
+
+    if (selectedProducts > 0 && selectedProducts <= maxItems) {
+      presentationDiv.classList.add(`m-${selectedProducts}`);
     }
   }
   
-  function checkMaxCharms() {
-    if (counter >= maxCharms) {
+  function checkMaxCharms(counter, maxItems, checkboxes, notice) {
+    if (counter >= maxItems) {
       checkboxes.forEach(checkbox => {
         if (!checkbox.checked) {
           checkbox.disabled = true;
@@ -86,7 +135,6 @@ document.addEventListener('DOMContentLoaded', function() {
         notice.classList.remove('hidden');
       });
     } else {
-
       checkboxes.forEach(checkbox => checkbox.disabled = false);
       notice.classList.add('hidden');
     }
@@ -288,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
       calcCartTotal(); 
   
       // Находим связанный чекбокс по data-product-id и снимаем отметку
-      const relatedCheckbox = document.querySelector(`.charm-checkbox[data-product-id="${productId}"]`);
+      const relatedCheckbox = document.querySelector(`.additional-charm[data-product-id="${productId}"]`);
       if (relatedCheckbox) {
         relatedCheckbox.checked = false;
   
