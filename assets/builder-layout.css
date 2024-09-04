@@ -57,6 +57,10 @@
     display: flex;
 }
 
+.l-builder.m-step-2 .l-builder-charms .b-charm__list.m-spacer {
+    display: none;
+}
+
 .l-builder.m-step-2 .b-steps-desc-title_text.m-step-2,
 .l-builder.m-step-2 .b-steps-desc-subtitle_text.m-step-2,
 .l-builder.m-step-2 .l-builder-charms {
@@ -64,6 +68,15 @@
 }
 
 .l-builder.m-step-3 .b-steps-desc-title_text.m-step-3,
-.l-builder.m-step-3 .b-steps-desc-subtitle_text.m-step-3 {
+.l-builder.m-step-3 .b-steps-desc-subtitle_text.m-step-3,
+.l-builder.m-step-3 .l-builder-charms{
     display: block;
+}
+
+.l-builder.m-step-3 .l-builder-charms .b-charm__list.m-spacer {
+    display: flex;
+}
+
+.l-builder.m-step-3 .l-builder-charms .b-charm__list.m-charms {
+    display: none;
 }
