@@ -4,11 +4,10 @@
 {{ 'builder-animation.css' | asset_url | stylesheet_tag }}
 {{ 'builder-steps.css' | asset_url | stylesheet_tag }}
  
-<!-- Подключение стилей и скриптов Swiper -->
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
 
-<script src="{{ 'builder-script2.js' | asset_url }}" defer></script>
+<script src="{{ 'builder-script.js' | asset_url }}" defer></script>
 
 <section id='builder-container' class='l-builder m-step-1'>
   <article class="l-builder-steps">
@@ -68,7 +67,6 @@
 
   <article class="l-builder-picture">
     <div class="b-chain" id="pendant-builder-container">
-      <!-- Swiper контейнер -->
       <div class="swiper-container">
         <div class="swiper-wrapper">
           {% for product in section.settings.select_first_product %}
@@ -85,14 +83,12 @@
         </div>
         <div id="charms_presentation" class="b-charms_presentation"></div>
         <div id="spacer_presentation" class="b-charms_presentation"></div>
-        <!-- Навигационные кнопки -->
         <div class="swiper-button-next b-chain_nav-btn m-next">
           
         </div>
         <div class="swiper-button-prev b-chain_nav-btn m-prev">
           
         </div>
-        <!-- Пагинация -->
         <div class="swiper-pagination"></div>
       </div>
       <div id='b-notice' class="b-charms-notice hidden">Maximum number of pendants added</div>
@@ -144,7 +140,6 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Инициализация Swiper
     const swiper = new Swiper('.swiper-container', {
       loop: true,
       pagination: {
@@ -197,30 +192,20 @@
       {% endfor %}
     ];
 
-    // Обновленная функция для объединения и записи данных в localStorage
     function setLocalStorageData(productsArray, name) {
       const storageKey = `builder.${name}`;
-      // Извлекаем существующие данные или инициализируем пустым массивом
       const existingData = JSON.parse(localStorage.getItem(storageKey)) || [];
-
-      // Объединяем существующие данные с новыми продуктами
       const updatedData = [...existingData, ...productsArray];
-
-      // Удаляем дубликаты на основе id продукта
       const uniqueData = updatedData.reduce((acc, current) => {
         if (!acc.some(product => product.id === current.id)) {
           acc.push(current);
         }
         return acc;
       }, []);
-
-      // Сохраняем объединенный массив без дубликатов в localStorage
       localStorage.setItem(storageKey, JSON.stringify(uniqueData));
     }
     localStorage.clear();
     setLocalStorageData([...selectedProductsFirst, ...selectedProductsSecond, ...selectedProductsThird], 'selectedProducts');
-    setLocalStorageData([], 'secondStepProducts');
-    setLocalStorageData([], 'thirdStepProducts');
   });
 </script>
 
