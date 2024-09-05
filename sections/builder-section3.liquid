@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
 
-<script src="{{ 'builder-script.js' | asset_url }}" defer></script>
+<script src="{{ 'builder-script2.js' | asset_url }}" defer></script>
 
 <section id='builder-container' class='l-builder m-step-1'>
   <article class="l-builder-steps">
@@ -220,6 +220,7 @@
     localStorage.clear();
     setLocalStorageData([...selectedProductsFirst, ...selectedProductsSecond, ...selectedProductsThird], 'selectedProducts');
     setLocalStorageData([], 'secondStepProducts');
+    setLocalStorageData([], 'thirdStepProducts');
   });
 </script>
 
