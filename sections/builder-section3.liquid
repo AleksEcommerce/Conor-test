@@ -13,61 +13,6 @@
 <script src="{{ 'builder-tabs.js' | asset_url }}" defer></script>
 
 <section id='builder-container' class='l-builder m-step-1'>
-  <article class="l-builder-steps">
-    <div class="b-steps">
-      <div class="b-steps-nav">
-        <div class="b-steps-nav-item m-back">
-          <span class="b-steps-nav-item__link hidden" id="builder-step-prev">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6.469 14.063 11.53 9 6.47 3.937" stroke="#010101" stroke-width="1.688" stroke-miterlimit="10" stroke-linecap="square"></path>
-            </svg>
-            <span>Back</span>
-          </span>
-        </div>
-        <div class="b-steps-nav-item m-next">
-          <span class="b-steps-nav-item__link" id="builder-step-next">
-            <span>Next</span>
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6.469 14.063 11.53 9 6.47 3.937" stroke="#010101" stroke-width="1.688" stroke-miterlimit="10" stroke-linecap="square"></path>
-            </svg>
-          </span>
-        </div>
-      </div>
-      <div id="builder-steps" class="b-steps-list">
-        <div class="b-steps-item" data-item="1">
-          <span>1</span>
-          <strong>
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" width="24px" height="24px"><polyline fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="8,29.312 21.921,41.348 42,10.652 "/></svg>
-          </strong>
-        </div>
-        <div class="b-steps-item" data-item="2">
-          <span>2</span>
-          <strong>
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" width="24px" height="24px"><polyline fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="8,29.312 21.921,41.348 42,10.652 "/></svg>
-          </strong>
-        </div>
-        <div class="b-steps-item" data-item="3">
-          <span>3</span>
-          <strong>
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" width="24px" height="24px"><polyline fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" points="8,29.312 21.921,41.348 42,10.652 "/></svg>
-          </strong>
-        </div>
-      </div>
-      <div class="b-steps-desc">
-        <h2 class="b-steps-desc-title">
-          <span class="b-steps-desc-title_text m-step-1">{{ section.settings.step_title_1 }}</span>
-          <span class="b-steps-desc-title_text m-step-2">{{ section.settings.step_title_2 }}</span>
-          <span class="b-steps-desc-title_text m-step-3">{{ section.settings.step_title_3 }}</span>
-        </h2>
-        <p class="b-steps-desc-subtitle">
-          <span class="b-steps-desc-subtitle_text m-step-1">{{ section.settings.step_subtitle_1 }}</span>
-          <span class="b-steps-desc-subtitle_text m-step-2">{{ section.settings.step_subtitle_2 }}</span>
-          <span class="b-steps-desc-subtitle_text m-step-3">{{ section.settings.step_subtitle_3 }}</span>
-        </p>
-      </div>
-    </div>
-  </article>
-
   <article class="l-builder-picture">
     <div class="b-chain" id="pendant-builder-container">
       <div class="swiper-container">
@@ -97,7 +42,7 @@
       <div id='b-notice' class="b-charms-notice hidden">Maximum number of pendants added</div>
       <div id='b-notice-1' class="b-charms-notice hidden">Maximum number of spacers added</div>
     </div>
-    <button id="b-select_btn" class="b-select" data-product-active="">SELECT</button>
+    {% comment %} <button id="b-select_btn" class="b-select" data-product-active="">SELECT</button> {% endcomment %}
   </article>
 
   <article class="l-builder-cart">
@@ -145,10 +90,13 @@
             </div>
           </div>
           <div class="b-tabs-content-item" data-tab="charms">
-            <div class="b-tabs-content-item__list">
+            <div class="b-tabs-content-item__list b-charm__list m-charms">
               {% for product in section.settings.select_second_product %}
                 {% assign product = all_products[product] %}
-                <div class="b-tabs-content-item__list-item" data-product-id="{{ product.variants.first.id }}">
+                <div class="b-tabs-content-item__list-item charm-checkbox" 
+                  data-product-id="{{ product.variants.first.id }}"
+                  data-charm="{{ product.metafields.custom.charm_builder_image | image_url }}" 
+                >
                   <figure class="b-tabs-content-item__figure">
                     <img 
                       src="{{ product.metafields.custom.charm_builder_image | img_url: 'medium' }}" 
@@ -165,10 +113,13 @@
             </div>
           </div>
           <div class="b-tabs-content-item" data-tab="spacers">
-            <div class="b-tabs-content-item__list">
+            <div class="b-tabs-content-item__list b-charm__list m-spacer">
               {% for product in section.settings.select_third_product %}
                 {% assign product = all_products[product] %}
-                <div class="b-tabs-content-item__list-item" data-product-id="{{ product.variants.first.id }}">
+                <div class="b-tabs-content-item__list-item spacer-checkbox" 
+                  data-product-id="{{ product.variants.first.id }}"
+                  data-charm="{{ product.metafields.custom.charm_builder_image | image_url }}" 
+                >
                   <figure class="b-tabs-content-item__figure">
                     <img 
                       src="{{ product.metafields.custom.charm_builder_image | img_url: 'medium' }}" 
@@ -189,36 +140,6 @@
     </div>
   </article>
   <article class="l-builder-charms">
-    <div class="b-charm__list m-charms">
-      {% for product in section.settings.select_second_product %}
-        {% assign product = all_products[product] %}
-        <div class="b-charm__list-item charm-checkbox" 
-          data-charm="{{ product.metafields.custom.charm_builder_image | image_url }}" 
-          data-product-id="{{ product.variants.first.id }}"
-        >
-          <img class="b-charm__list-item_img" src="{{ product.metafields.custom.charm_builder_image | img_url: 'medium' }}" alt="{{ product.title }}">
-          <div class="b-charm__list-desc">
-            <span class="b-charm__list-desc_title">{{ product.title }}</span>
-            <span class="b-charm__list-desc_subtitle">{{ product.price }}</span>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-    <div class="b-charm__list m-spacer">
-      {% for product in section.settings.select_third_product %}
-        {% assign product = all_products[product] %}
-        <div class="b-charm__list-item spacer-checkbox" 
-          data-charm="{{ product.metafields.custom.charm_builder_image | image_url }}" 
-          data-product-id="{{ product.variants.first.id }}"
-        >
-          <img class="b-charm__list-item_img" src="{{ product.metafields.custom.charm_builder_image | img_url: 'medium' }}" alt="{{ product.title }}">
-          <div class="b-charm__list-desc">
-            <span class="b-charm__list-desc_title">{{ product.title }}</span>
-            <span class="b-charm__list-desc_subtitle">{{ product.price }}</span>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
   </article>
 </section>
 
@@ -240,18 +161,19 @@
     });
 
     paginationThumbs.forEach((thumb, index) => {
-        thumb.addEventListener('click', function() {
-            swiper.slideTo(index + 1); // Переход к слайду по индексу
-        });
-    });
-    function updatePagination(activeIndex) {
-      paginationThumbs.forEach((thumb, index) => {
-          thumb.classList.remove('active');
-          if (index === activeIndex - 1 || (activeIndex === 0 && index === paginationThumbs.length - 1)) {
-              thumb.classList.add('active');
-          }
+      thumb.addEventListener('click', function() {
+          swiper.slideToLoop(index); // Используем slideToLoop для правильного перехода
       });
-    }
+  });
+
+  function updatePagination(activeIndex) {
+    paginationThumbs.forEach((thumb, index) => {
+        thumb.classList.remove('active');
+        if (index === activeIndex) {
+            thumb.classList.add('active');
+        }
+    });
+}
     updatePagination(swiper.activeIndex);
 
     var selectedProductsFirst = [
@@ -306,6 +228,8 @@
       localStorage.setItem(storageKey, JSON.stringify(uniqueData));
     }
     localStorage.clear();
+    const activeChain = document.querySelector('.swiper-slide-active').getAttribute('data-product-active-id');
+    localStorage.setItem('builder.activeChain', JSON.stringify(activeChain));
     setLocalStorageData([...selectedProductsFirst, ...selectedProductsSecond, ...selectedProductsThird], 'selectedProducts');
   });
 </script>

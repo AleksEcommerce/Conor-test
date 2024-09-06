@@ -2,13 +2,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // Main container
   const mainContainer = document.getElementById('builder-container');
 
-  // Steps
-  const steps = document.getElementById('builder-steps');
-  const stepItems = Array.from(steps.querySelectorAll('.b-steps-item'));
-  const totalSteps = stepItems.length;
-  const stepNext = document.getElementById('builder-step-next');
-  const stepPrev = document.getElementById('builder-step-prev');
-
   // Builder Cart
   const cartTotal = document.getElementById('builder-cart-total');
   const cartItemsNumber = document.getElementById('builder-cart-total-items');
@@ -19,7 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const noticeSpacers = document.getElementById('b-notice-1'); // Notice for maximum number of charms
   const charmsList = document.getElementById('charms_presentation'); // Presentation for selected charms
   const spacerList = document.getElementById('spacer_presentation'); // Presentation for selected spacers
-  const selectBtn = document.getElementById('b-select_btn'); // Button for selecting charms
+
+  const swiperPaginationThumbs = document.querySelectorAll('.swiper-pagination-thumb'); // Button for selecting charms
+
   const charmsCheckboxes = Array.from(document.querySelectorAll('.charm-checkbox')); // Checkboxes for charms
   let counterCharms = 0; // Counter for selected charms
   const maxCharms = 4; // Maximum number of charms
@@ -38,7 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
         counterCharms++; 
         maxSpacers = counterCharms - 1;
         updateCharmListClass(charmsList, maxCharms);
-        checkStep();
       }
       checkMaxCharms(counterCharms, maxCharms, charmsCheckboxes, noticeCharms); 
     });
@@ -56,7 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
         counterSpacers++;
         maxSpacers = counterCharms - 1;
         updateCharmListClass(spacerList, maxCharms);
-        checkStep();
         console.log(counterSpacers);
       } 
       checkMaxCharms(counterSpacers, maxSpacers, spacersCheckboxes, noticeSpacers);
@@ -95,18 +88,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  selectBtn.addEventListener('click', function() {
-    const activeSlide = document.querySelector('#pendant-builder-container .swiper-slide-active');
-    const currentProductId = activeSlide.getAttribute('data-product-active-id'); 
-
-    
-    const productCurrent = getProductFromLocalStorage(currentProductId);
-    addProductToCartStorage(productCurrent);
-    calcCartTotal();
-    switchStep(2);
-    checkStep();
+  swiperPaginationThumbs.forEach((btn, index) => {
+    btn.addEventListener('click', function() {
+      const currentProductId = btn.getAttribute('data-product-id'); 
+      const productCurrent = getProductFromLocalStorage(currentProductId);
+      addProductToCartStorage(productCurrent);
+      calcCartTotal();
+    });
   });
 
+  function initializeFirstProduct() {
+    const initFirstProduct = JSON.parse(localStorage.getItem('builder.activeChain'));
+    console.log('initFirstProduct', initFirstProduct);
+    addProductToCartStorage(getProductFromLocalStorage(initFirstProduct));
+    calcCartTotal();
+  }
+  
   function getProductFromLocalStorage(productId) {
     const savedProducts = JSON.parse(localStorage.getItem('builder.selectedProducts'));
 
@@ -122,76 +119,6 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log(product);
     return product;
   }
-
-  function switchStep(targetStep) {
-    const stepIndex = targetStep - 1;
-
-    // Проверка корректности целевого шага
-    if (stepIndex < 0 || stepIndex >= totalSteps) {
-        console.error('Некорректный шаг:', targetStep);
-        return;
-    }
-
-    stepItems.forEach((step, index) => {
-        step.classList.remove('m-active', 'm-done');
-    });
-
-    mainContainer.classList.forEach(className => {
-        if (className.startsWith('m-step-')) {
-            mainContainer.classList.remove(className);
-        }
-    });
-
-    stepItems.forEach((step, index) => {
-        if (index < stepIndex) {
-            step.classList.add('m-done');
-        } else if (index === stepIndex) {
-            step.classList.add('m-active');
-        }
-    });
-
-    mainContainer.classList.add(`m-step-${targetStep}`);
-    localStorage.setItem('builder.currentStep', targetStep);
-  }
-
-  stepNext.addEventListener('click', () => {
-    let currentStep = Array.from(stepItems).findIndex(step => step.classList.contains('m-active')) + 1;
-
-    console.log(currentStep);
-    if (currentStep < totalSteps) {
-        switchStep(currentStep + 1);
-    }
-
-    checkStep();
-  });
-
-  stepPrev.addEventListener('click', () => {
-      let currentStep = Array.from(stepItems).findIndex(step => step.classList.contains('m-active')) + 1;
-
-      console.log(currentStep);
-      if (currentStep > 1) {
-          switchStep(currentStep - 1);
-      }
-
-      checkStep();
-  });
-
-  function checkStep() {
-    const currentStep = parseInt(localStorage.getItem('builder.currentStep'));
-    checkMaxCharms(counterSpacers, maxSpacers, spacersCheckboxes, noticeSpacers);
-    console.log(currentStep);
-    if (currentStep === 1) {
-      stepPrev.classList.add('hidden');
-    } else if (currentStep === parseInt(totalSteps)) {
-      stepNext.classList.add('hidden');
-    } 
-    else if (counterCharms < 1) {
-      stepNext.classList.add('hidden');
-    } else {
-      stepPrev.classList.remove('hidden');
-      stepNext.classList.remove('hidden');
-    }
-  };
 
   function checkDublicateProducts(productId) {
     const storageKey = `builder.builderCart`;
@@ -234,8 +161,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const storageKey = `builder.builderCart`;
     const existingData = JSON.parse(localStorage.getItem(storageKey)) || [];
     if (Array.isArray(existingData)) {
-        const isStep1 = localStorage.getItem('builder.currentStep') === '1';
-        if (isStep1) {
+        const isActiveChains = JSON.parse(localStorage.getItem('builder.activeTab')) === 'chains';
+        if (isActiveChains) {
             console.log('Step 1: Replacing the first element in the cart');
             existingData[0] = product;
             console.log(existingData[0]);
@@ -387,7 +314,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // localStorage.clear();
-  switchStep(1);
-  checkStep(); // Set first step as active
   clearCartStorage();
+  initializeFirstProduct();
 });

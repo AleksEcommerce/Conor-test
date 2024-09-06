@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const tabNavItems = document.querySelectorAll('.b-tabs-nav-item');
   const tabContentItems = document.querySelectorAll('.b-tabs-content-item');
   const indicator = document.querySelector('.b-tabs-nav-indicator');
+  localStorage.setItem('builder.activeTab', JSON.stringify('chains'));
 
   // Инициализация положения индикатора на активном элементе
   function moveIndicator(element) {
@@ -23,7 +24,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     targetNavItem.classList.add('m-active');
     targetContentItem.classList.add('m-active');
-
+    localStorage.setItem('builder.activeTab', JSON.stringify(targetTab));
+    
     // Перемещаем индикатор на новый активный элемент
     moveIndicator(targetNavItem);
   }
