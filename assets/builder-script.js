@@ -9,18 +9,15 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Charms and Spacers
   const noticeCharms = document.getElementById('b-notice'); // Notice for maximum number of charms
-  const noticeSpacers = document.getElementById('b-notice-1'); // Notice for maximum number of charms
   const charmsList = document.getElementById('charms_presentation'); // Presentation for selected charms
-  const spacerList = document.getElementById('spacer_presentation'); // Presentation for selected spacers
 
   const swiperPaginationThumbs = document.querySelectorAll('.swiper-pagination-thumb'); // Button for selecting charms
 
   const charmsCheckboxes = Array.from(document.querySelectorAll('.charm-checkbox')); // Checkboxes for charms
-  let counterCharms = 0; // Counter for selected charms
-  const maxCharms = 4; // Maximum number of charms
   const spacersCheckboxes = Array.from(document.querySelectorAll('.spacer-checkbox')); // Checkboxes for charms
-  let counterSpacers = 0; // Counter for selected spacers
-  let maxSpacers = 3; // Maximum number of spacers
+
+  let counterCharms = 0; // Counter for selected charms
+  const maxCharms = 8; // Maximum number of charms
 
   charmsCheckboxes.forEach((checkbox, index) => {
     checkbox.addEventListener('click', function() {
@@ -31,28 +28,25 @@ document.addEventListener('DOMContentLoaded', function() {
         addProductToCartStorage(productData);
         calcCartTotal();
         counterCharms++; 
-        maxSpacers = counterCharms - 1;
+        // maxSpacers = counterCharms - 1;
         updateCharmListClass(charmsList, maxCharms);
       }
-      checkMaxCharms(counterCharms, maxCharms, charmsCheckboxes, noticeCharms); 
+      checkMaxCharms(counterCharms, maxCharms, noticeCharms); 
     });
   });
   
   spacersCheckboxes.forEach((checkbox, index) => {
     checkbox.addEventListener('click', function() {
-      if (counterSpacers + 1 < counterCharms) {
-        console.log('counterSpacers', counterSpacers);
-        console.log('counterCharms', counterCharms);
+      if (counterCharms < maxCharms) {
         const productData = getProductFromLocalStorage(this.getAttribute('data-product-id'));
-        createPresentationItem(productData, spacerList);
+        createPresentationItem(productData, charmsList);
         addProductToCartStorage(productData);
         calcCartTotal();
-        counterSpacers++;
-        maxSpacers = counterCharms - 1;
-        updateCharmListClass(spacerList, maxCharms);
-        console.log(counterSpacers);
-      } 
-      checkMaxCharms(counterSpacers, maxSpacers, spacersCheckboxes, noticeSpacers);
+        counterCharms++; 
+        // maxSpacers = counterCharms - 1;
+        updateCharmListClass(charmsList, maxCharms);
+      }
+      checkMaxCharms(counterCharms, maxCharms, noticeCharms);
     });
   });
 
@@ -80,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
   
-  function checkMaxCharms(counter, maxItems, checkboxes, notice) {
+  function checkMaxCharms(counter, maxItems, notice) {
     if (counter >= maxItems) {
       notice.classList.remove('hidden');
     } else {
@@ -278,7 +272,6 @@ document.addEventListener('DOMContentLoaded', function() {
         let qty = parseInt(qtyProductItem.getAttribute('data-product-qty'), 10);
         
         const charmToRemove = charmsList.querySelector(`[data-product-id="${productId}"]`);
-        const spacerToRemove = spacerList.querySelector(`[data-product-id="${productId}"]`);
         if (charmToRemove) {
           charmToRemove.classList.remove('m-showed');
           counterCharms--;
@@ -287,16 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
           setTimeout(() => {
             charmToRemove.remove();
             updateCharmListClass(charmsList, maxCharms);
-            checkMaxCharms(counterCharms, maxCharms, charmsCheckboxes, noticeCharms); 
-          }, 300);
-        } else if (spacerToRemove) {
-          spacerToRemove.classList.remove('m-showed');
-          counterSpacers--;
-          maxSpacers = counterCharms - 1;
-          setTimeout(() => {
-            spacerToRemove.remove();
-            updateCharmListClass(spacerList, maxCharms);
-            checkMaxCharms(counterSpacers, maxSpacers, spacersCheckboxes, noticeSpacers); 
+            checkMaxCharms(counterCharms, maxCharms, noticeCharms); 
           }, 300);
         }
 

@@ -24,13 +24,13 @@
               <img src="{{ product.metafields.custom.charm_builder_image | img_url: 'master' }}" alt="{{ product.title }}">
               <span class="b-chain-text">
                 <span class="b-chain-text_title">{{ product.title }}</span>
-                <span class="b-chain-text_subtitle"> Lorem Ipsum Color</span>
+                <span class="b-chain-text_subtitle">{{ product.variants.first.price | money }}</span>
               </span>
             </div>
           {% endfor %}
         </div>
         <div id="charms_presentation" class="b-charms_presentation"></div>
-        <div id="spacer_presentation" class="b-charms_presentation"></div>
+
         <div class="swiper-button-next b-chain_nav-btn m-next">
           
         </div>
@@ -40,7 +40,6 @@
         {% comment %} <div class="swiper-pagination"></div> {% endcomment %}
       </div>
       <div id='b-notice' class="b-charms-notice hidden">Maximum number of pendants added</div>
-      <div id='b-notice-1' class="b-charms-notice hidden">Maximum number of spacers added</div>
     </div>
     {% comment %} <button id="b-select_btn" class="b-select" data-product-active="">SELECT</button> {% endcomment %}
   </article>
@@ -83,7 +82,7 @@
                   </figure>
                   <div class="b-tabs-content-item__desc"> 
                     <span class="b-tabs-content-item__list-item_title">{{ product.title }}</span>
-                    <span class="b-tabs-content-item__list-item_subtitle">{{ product.price }}</span>
+                    <span class="b-tabs-content-item__list-item_subtitle">{{ product.variants.first.price | money }}</span>
                   </div>
                 </div>
               {% endfor %}
@@ -106,7 +105,7 @@
                   </figure>
                   <div class="b-tabs-content-item__desc"> 
                     <span class="b-tabs-content-item__list-item_title">{{ product.title }}</span>
-                    <span class="b-tabs-content-item__list-item_subtitle">{{ product.price }}</span>
+                    <span class="b-tabs-content-item__list-item_subtitle">{{ product.variants.first.price | money }}</span>
                   </div>
                 </div>
               {% endfor %}
@@ -129,7 +128,7 @@
                   </figure>
                   <div class="b-tabs-content-item__desc"> 
                     <span class="b-tabs-content-item__list-item_title">{{ product.title }}</span>
-                    <span class="b-tabs-content-item__list-item_subtitle">{{ product.price }}</span>
+                    <span class="b-tabs-content-item__list-item_subtitle">{{ product.variants.first.price | money }}</span>
                   </div>
                 </div>
               {% endfor %}
