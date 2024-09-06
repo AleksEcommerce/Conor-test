@@ -12,6 +12,12 @@
     background-color: var(--background-picture);
 }
 
+.l-builder-tabs {
+    max-width: var(--width-container);
+    margin: 0 auto;
+    padding-bottom: 20px;
+}
+
 .l-builder-steps {
   background-color: #ffffff;
   padding: 50px 0;

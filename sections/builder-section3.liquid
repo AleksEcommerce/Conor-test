@@ -3,11 +3,14 @@
 {{ 'builder-products.css' | asset_url | stylesheet_tag }}
 {{ 'builder-animation.css' | asset_url | stylesheet_tag }}
 {{ 'builder-steps.css' | asset_url | stylesheet_tag }}
+
+{{ 'builder-tabs.css' | asset_url | stylesheet_tag }}
  
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
 
 <script src="{{ 'builder-script.js' | asset_url }}" defer></script>
+<script src="{{ 'builder-tabs.js' | asset_url }}" defer></script>
 
 <section id='builder-container' class='l-builder m-step-1'>
   <article class="l-builder-steps">
@@ -95,7 +98,6 @@
       <div id='b-notice-1' class="b-charms-notice hidden">Maximum number of spacers added</div>
     </div>
     <button id="b-select_btn" class="b-select" data-product-active="">SELECT</button>
-    
   </article>
 
   <article class="l-builder-cart">
@@ -112,6 +114,80 @@
     <span id="builder-cart-checkout" class="b-builder__cart-checkout">ADD CHARM BUILDER TO CART</span>
   </article>
 
+  <article class="l-builder-tabs">
+    <div id="builder-tabs" class="b-tabs">
+      <div class="b-tabs-nav">
+        <div class="b-tabs-nav-item m-active" data-tab="chains">Chains</div>
+        <div class="b-tabs-nav-item" data-tab="charms">Charms</div>
+        <div class="b-tabs-nav-item" data-tab="spacers">Spacers</div>
+        <div class="b-tabs-nav-indicator"></div>
+      </div>
+      <div class="b-tabs-content-wrapper">
+        <div class="b-tabs-content">
+          <div class="b-tabs-content-item m-active" data-tab="chains">
+            <div class="b-tabs-content-item__list">
+              {% for product in section.settings.select_first_product %}
+                {% assign product = all_products[product] %}
+                <div class="b-tabs-content-item__list-item" data-product-id="{{ product.variants.first.id }}">
+                  <figure class="b-tabs-content-item__figure">
+                    <img 
+                      src="{{ product.metafields.custom.charm_builder_image | img_url: 'medium' }}" 
+                      alt="{{ product.title }}"
+                      class="b-tabs-content-item__list-item_img"
+                    >
+                  </figure>
+                  <div class="b-tabs-content-item__desc"> 
+                    <span class="b-tabs-content-item__list-item_title">{{ product.title }}</span>
+                    <span class="b-tabs-content-item__list-item_subtitle">{{ product.price }}</span>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="b-tabs-content-item" data-tab="charms">
+            <div class="b-tabs-content-item__list">
+              {% for product in section.settings.select_second_product %}
+                {% assign product = all_products[product] %}
+                <div class="b-tabs-content-item__list-item" data-product-id="{{ product.variants.first.id }}">
+                  <figure class="b-tabs-content-item__figure">
+                    <img 
+                      src="{{ product.metafields.custom.charm_builder_image | img_url: 'medium' }}" 
+                      alt="{{ product.title }}"
+                      class="b-tabs-content-item__list-item_img"
+                    >
+                  </figure>
+                  <div class="b-tabs-content-item__desc"> 
+                    <span class="b-tabs-content-item__list-item_title">{{ product.title }}</span>
+                    <span class="b-tabs-content-item__list-item_subtitle">{{ product.price }}</span>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="b-tabs-content-item" data-tab="spacers">
+            <div class="b-tabs-content-item__list">
+              {% for product in section.settings.select_third_product %}
+                {% assign product = all_products[product] %}
+                <div class="b-tabs-content-item__list-item" data-product-id="{{ product.variants.first.id }}">
+                  <figure class="b-tabs-content-item__figure">
+                    <img 
+                      src="{{ product.metafields.custom.charm_builder_image | img_url: 'medium' }}" 
+                      alt="{{ product.title }}"
+                      class="b-tabs-content-item__list-item_img"
+                    >
+                  </figure>
+                  <div class="b-tabs-content-item__desc"> 
+                    <span class="b-tabs-content-item__list-item_title">{{ product.title }}</span>
+                    <span class="b-tabs-content-item__list-item_subtitle">{{ product.price }}</span>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
   <article class="l-builder-charms">
     <div class="b-charm__list m-charms">
       {% for product in section.settings.select_second_product %}
