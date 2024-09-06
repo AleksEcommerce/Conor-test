@@ -121,6 +121,10 @@
           data-product-id="{{ product.variants.first.id }}"
         >
           <img class="b-charm__list-item_img" src="{{ product.metafields.custom.charm_builder_image | img_url: 'medium' }}" alt="{{ product.title }}">
+          <div class="b-charm__list-desc">
+            <span class="b-charm__list-desc_title">{{ product.title }}</span>
+            <span class="b-charm__list-desc_subtitle">{{ product.price }}</span>
+          </div>
         </div>
       {% endfor %}
     </div>
@@ -132,6 +136,10 @@
           data-product-id="{{ product.variants.first.id }}"
         >
           <img class="b-charm__list-item_img" src="{{ product.metafields.custom.charm_builder_image | img_url: 'medium' }}" alt="{{ product.title }}">
+          <div class="b-charm__list-desc">
+            <span class="b-charm__list-desc_title">{{ product.title }}</span>
+            <span class="b-charm__list-desc_subtitle">{{ product.price }}</span>
+          </div>
         </div>
       {% endfor %}
     </div>
