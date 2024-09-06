@@ -19,7 +19,6 @@
         <div class="swiper-wrapper">
           {% for product in section.settings.select_first_product %}
             {% assign product = all_products[product] %}
-            {% assign product_price = product.price | divided_by: 100 %}
             <div class="swiper-slide" data-product-active-id="{{ product.variants.first.id }}">
               <img src="{{ product.metafields.custom.charm_builder_image | img_url: 'master' }}" alt="{{ product.title }}">
               <span class="b-chain-text">
