@@ -103,26 +103,16 @@
 .b-tabs-content-item {
     display: none;
     height: var(--height-tabs-item);
-    transition: all 0.3s ease;
 }
 
 .b-tabs-content-item.m-active {
     display: block;
-    opacity: 1;
-    visibility: visible;
-}
-
-.b-tabs-content-item.m-active .b-tabs-content-item__list {
-    opacity: 1;
-    visibility: visible;
+    
 }
 
 .b-tabs-content-item__list {
     display: flex;
     justify-content: flex-start;
-    transition: all 0.3s ease;
-    opacity: 0;
-    visibility: hidden;
 }
 
 .b-tabs-content-item__list-item {

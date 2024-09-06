@@ -2,7 +2,7 @@
     --background-picture: #f2f2f2;
     --background-charms: #ffffff;
     --width-container: 1200px;
-    --pb-container: 200px;
+    --pb-container: 210px;
 }
 
 
@@ -44,7 +44,7 @@
     position: absolute;
     width: 400px;
     right: 50%;
-    bottom: calc(var(--width-chars-item) + var(--padding-top-chars-item) + 30px);
+    bottom: calc(var(--width-chars-item) + var(--padding-top-chars-item) + 40px);
     margin-right: calc(var(--width-container) / -2);
     z-index: 4;
 }
