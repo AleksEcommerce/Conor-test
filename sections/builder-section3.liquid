@@ -92,7 +92,7 @@
         <div class="swiper-button-prev b-chain_nav-btn m-prev">
           
         </div>
-        <div class="swiper-pagination"></div>
+        {% comment %} <div class="swiper-pagination"></div> {% endcomment %}
       </div>
       <div id='b-notice' class="b-charms-notice hidden">Maximum number of pendants added</div>
       <div id='b-notice-1' class="b-charms-notice hidden">Maximum number of spacers added</div>
@@ -125,10 +125,10 @@
       <div class="b-tabs-content-wrapper">
         <div class="b-tabs-content">
           <div class="b-tabs-content-item m-active" data-tab="chains">
-            <div class="b-tabs-content-item__list">
+            <div class="b-tabs-content-item__list swiper-pagination-custom">
               {% for product in section.settings.select_first_product %}
                 {% assign product = all_products[product] %}
-                <div class="b-tabs-content-item__list-item" data-product-id="{{ product.variants.first.id }}">
+                <div class="b-tabs-content-item__list-item swiper-pagination-thumb" data-product-id="{{ product.variants.first.id }}">
                   <figure class="b-tabs-content-item__figure">
                     <img 
                       src="{{ product.metafields.custom.charm_builder_image | img_url: 'medium' }}" 
@@ -224,18 +224,35 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    const paginationThumbs = document.querySelectorAll('.swiper-pagination-thumb');
     const swiper = new Swiper('.swiper-container', {
       loop: true,
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
       navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
       },
+      on: {
+        slideChange: function() {
+            updatePagination(this.activeIndex);
+        },
+      },
       slidesPerView: 1,
     });
+
+    paginationThumbs.forEach((thumb, index) => {
+        thumb.addEventListener('click', function() {
+            swiper.slideTo(index + 1); // Переход к слайду по индексу
+        });
+    });
+    function updatePagination(activeIndex) {
+      paginationThumbs.forEach((thumb, index) => {
+          thumb.classList.remove('active');
+          if (index === activeIndex - 1 || (activeIndex === 0 && index === paginationThumbs.length - 1)) {
+              thumb.classList.add('active');
+          }
+      });
+    }
+    updatePagination(swiper.activeIndex);
 
     var selectedProductsFirst = [
       {% for product in section.settings.select_first_product %}
