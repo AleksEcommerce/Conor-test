@@ -151,11 +151,11 @@
     <div class="row-item">1</div>
     <div class="row-item">2</div>
     <div class="row-item">3</div>
-    {% comment %} <div class="row-item">4</div>
+    <div class="row-item">4</div>
     <div class="row-item">5</div>
     <div class="row-item">6</div>
     <div class="row-item">7</div>
-    <div class="row-item">8</div> {% endcomment %}
+    <div class="row-item">8</div>
 </div>
 
 <style>
@@ -167,11 +167,10 @@
 
   .row-container {
     display: flex;
-    gap: 10px; /* Расстояние между элементами */
     justify-content: center;
     margin-top: 50px;
     height: 50px;
-    width: 300px;
+    width: 700px;
 }
 
 .row-item {
@@ -184,19 +183,32 @@
     align-items: center;
     cursor: grab;
     transition: transform 0.3s; /* Плавное перемещение */
-
 }
 
-.row-container .row-item:nth-child(1) {
-    transform: translate(-20px, -20px) !important;
+.row-item.m-1-line {
+  transform: translateY(-10px);
+}
+.row-item.m-2-line {
+  transform: translateY(-20px);
+}
+.row-item.m-3-line {
+  transform: translateY(-30px);
 }
 
-.row-container .row-item:nth-child(3) {
-  transform: translate(20px, -20px) !important;
+ .row-container.m-odd .row-item:nth-child(1) {
+    transform: translate(-10px, -10px) !important;
+}
+
+.row-container.m-odd .row-item:nth-child(3) {
+  transform: translate(10px, -10px) !important;
 }
 
 .sortable-ghost {
-    opacity: 0.4; /* Полупрозрачный элемент при перетаскивании */
+  opacity: 0.4; /* Полупрозрачный элемент при перетаскивании */
+}
+
+.sortable-swap-highlight {
+  border: 2px dashed #FF6347; /* Показать границу при наведении */
 }
 </style>
 </article>
@@ -208,27 +220,113 @@
    /// Первій пример
    const container = document.querySelector('.row-container');
 
-   // Инициализация Sortable на контейнере
-   const sortable = new Sortable(container, {
-       animation: 150, // Анимация перемещения
-       ghostClass: 'sortable-ghost', // Класс для элемента-призрака
-       onEnd: function () {
-           // Опционально: действия после окончания перетаскивания
-           console.log('Позиции обновлены');
-       },
-   });
+function updateClasses() {
+    let allItems = container.querySelectorAll('.row-item'); // Обновляем список элементов
+    console.log(allItems);
 
-   // Пример функции удаления элемента
-   container.addEventListener('click', function (event) {
-       if (event.target.classList.contains('row-item')) {
-           const itemToRemove = event.target;
+    // Сначала удаляем все добавленные ранее классы
+    allItems.forEach(item => {
+        item.classList.remove('m-3-line', 'm-2-line', 'm-1-line', 'm-center');
+    });
 
-           // Удаляем элемент
-           itemToRemove.remove();
+    // Определяем четное или нечетное количество элементов
+    if (allItems.length % 2 !== 0) {
+        container.classList.remove('m-even');
+        container.classList.add('m-odd');
 
-           console.log(`Элемент с номером ${itemToRemove.textContent} удален`);
-       }
-   });
+        // Устанавливаем классы в зависимости от количества элементов
+        if (allItems.length === 7) {
+            allItems[0].classList.add('m-3-line');
+            allItems[6].classList.add('m-3-line');
+
+            allItems[1].classList.add('m-2-line');
+            allItems[5].classList.add('m-2-line');
+
+            allItems[2].classList.add('m-1-line');
+            allItems[4].classList.add('m-1-line');
+
+            allItems[3].classList.add('m-center');
+        } else if (allItems.length === 5) {
+            allItems[0].classList.add('m-2-line');
+            allItems[4].classList.add('m-2-line');
+
+            allItems[1].classList.add('m-1-line');
+            allItems[3].classList.add('m-1-line');
+
+            allItems[2].classList.add('m-center');
+        } else if (allItems.length === 3) {
+            allItems[0].classList.add('m-1-line');
+            allItems[2].classList.add('m-1-line');
+
+            allItems[1].classList.add('m-center');
+        } else if (allItems.length === 1) {
+            allItems[0].classList.add('m-center');
+        }
+    } else {
+        container.classList.remove('m-odd');
+        container.classList.add('m-even');
+
+        if (allItems.length === 8) {
+            allItems[0].classList.add('m-3-line');
+            allItems[7].classList.add('m-3-line');
+
+            allItems[1].classList.add('m-2-line');
+            allItems[6].classList.add('m-2-line');
+
+            allItems[2].classList.add('m-1-line');
+            allItems[5].classList.add('m-1-line');
+
+            allItems[3].classList.add('m-center');
+            allItems[4].classList.add('m-center');
+        } else if (allItems.length === 6) {
+            allItems[0].classList.add('m-2-line');
+            allItems[5].classList.add('m-2-line');
+
+            allItems[1].classList.add('m-1-line');
+            allItems[4].classList.add('m-1-line');
+
+            allItems[2].classList.add('m-center');
+            allItems[3].classList.add('m-center');
+        } else if (allItems.length === 4) {
+            allItems[0].classList.add('m-1-line');
+            allItems[3].classList.add('m-1-line');
+
+            allItems[1].classList.add('m-center');
+            allItems[2].classList.add('m-center');
+        } else if (allItems.length === 2) {
+            allItems[0].classList.add('m-center');
+            allItems[1].classList.add('m-center');
+        }
+    }
+}
+
+const sortable = new Sortable(container, {
+    animation: 150, // Анимация перемещения
+    ghostClass: 'sortable-ghost', // Класс для элемента-призрака
+    swap: true, // Включить режим swap
+    swapClass: 'sortable-swap-highlight', // Класс для выделения при наведении
+    swapThreshold: 0.65, // Порог срабатывания обмена
+    onEnd: function () {
+        // Опционально: действия после окончания перетаскивания
+        console.log('Позиции обновлены');
+        updateClasses(); // Обновляем классы после изменения порядка
+    },
+});
+
+// Пример функции удаления элемента
+container.addEventListener('click', function (event) {
+    if (event.target.classList.contains('row-item')) {
+        const itemToRemove = event.target;
+
+        // Удаляем элемент
+        itemToRemove.remove();
+        updateClasses(); // Обновляем классы после удаления
+        console.log(`Элемент с номером ${itemToRemove.textContent} удален`);
+    }
+});
+
+updateClasses();
+
 
     ///////////////////////////////////////////////////////////////////////////////
     const paginationThumbs = document.querySelectorAll('.swiper-pagination-thumb');
@@ -322,7 +420,7 @@
 
 {% schema %}
 {
-  "name": "Pendant Builder 3",
+  "name": "Pendant Builder 3", 
   "settings": [
     {
       "type": "header",
