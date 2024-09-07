@@ -9,6 +9,11 @@
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
 
+{% comment %}  {% endcomment %}
+{% comment %} <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.8/lib/draggable.bundle.legacy.js" defer></script> {% endcomment %}
+<script src="{{ 'sortable.js' | asset_url }}" defer></script>
+{% comment %}  {% endcomment %}
+
 <script src="{{ 'builder-script.js' | asset_url }}" defer></script>
 <script src="{{ 'builder-tabs.js' | asset_url }}" defer></script>
 
@@ -136,13 +141,96 @@
         </div>
       </div>
     </div>
-  </article>
-  <article class="l-builder-charms">
-  </article>
+  </article>  
+
+
+  
 </section>
+<article class="l-builder-charms">
+  <div class="row-container">
+    <div class="row-item">1</div>
+    <div class="row-item">2</div>
+    <div class="row-item">3</div>
+    {% comment %} <div class="row-item">4</div>
+    <div class="row-item">5</div>
+    <div class="row-item">6</div>
+    <div class="row-item">7</div>
+    <div class="row-item">8</div> {% endcomment %}
+</div>
+
+<style>
+  .l-builder-charms {
+    height: 500px;
+
+  }
+
+
+  .row-container {
+    display: flex;
+    gap: 10px; /* Расстояние между элементами */
+    justify-content: center;
+    margin-top: 50px;
+    height: 50px;
+    width: 300px;
+}
+
+.row-item {
+    width: 50px;
+    height: 50px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: grab;
+    transition: transform 0.3s; /* Плавное перемещение */
+
+}
+
+.row-container .row-item:nth-child(1) {
+    transform: translate(-20px, -20px) !important;
+}
+
+.row-container .row-item:nth-child(3) {
+  transform: translate(20px, -20px) !important;
+}
+
+.sortable-ghost {
+    opacity: 0.4; /* Полупрозрачный элемент при перетаскивании */
+}
+</style>
+</article>
+
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+   ///////////////////////////////////////////////////////////////////////////
+   /// Первій пример
+   const container = document.querySelector('.row-container');
+
+   // Инициализация Sortable на контейнере
+   const sortable = new Sortable(container, {
+       animation: 150, // Анимация перемещения
+       ghostClass: 'sortable-ghost', // Класс для элемента-призрака
+       onEnd: function () {
+           // Опционально: действия после окончания перетаскивания
+           console.log('Позиции обновлены');
+       },
+   });
+
+   // Пример функции удаления элемента
+   container.addEventListener('click', function (event) {
+       if (event.target.classList.contains('row-item')) {
+           const itemToRemove = event.target;
+
+           // Удаляем элемент
+           itemToRemove.remove();
+
+           console.log(`Элемент с номером ${itemToRemove.textContent} удален`);
+       }
+   });
+
+    ///////////////////////////////////////////////////////////////////////////////
     const paginationThumbs = document.querySelectorAll('.swiper-pagination-thumb');
     const swiper = new Swiper('.swiper-container', {
       loop: true,
