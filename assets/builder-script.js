@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Charms and Spacers
   const noticeCharms = document.getElementById('b-notice'); // Notice for maximum number of charms
   const charmsList = document.getElementById('charms_presentation'); // Presentation for selected charms
+  const tipsForDrugAndDrop = document.getElementById('druganddrop'); // Tips for drug and drop
 
   const swiperPaginationThumbs = document.querySelectorAll('.swiper-pagination-thumb'); // Button for selecting charms
 
@@ -40,8 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
         addProductToCartStorage(productData);
         calcCartTotal();
         counterCharms++; 
-        // maxSpacers = counterCharms - 1;
-        // updateCharmListClass(charmsList, maxCharms);
         updateClasses(charmsList, maxCharms);
       }
       checkMaxCharms(counterCharms, maxCharms, noticeCharms); 
@@ -56,8 +55,6 @@ document.addEventListener('DOMContentLoaded', function() {
         addProductToCartStorage(productData);
         calcCartTotal();
         counterCharms++; 
-        // maxSpacers = counterCharms - 1;
-        // updateCharmListClass(charmsList, maxCharms);
         updateClasses(charmsList, maxCharms);
       }
       checkMaxCharms(counterCharms, maxCharms, noticeCharms);
@@ -89,21 +86,17 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function updateClasses(container, maxItems) {
-    let allItems = Array.from(container.children); // Обновляем список элементов
+    let allItems = Array.from(container.children);
     const selectedProducts = container.children.length;
     console.log(allItems);
 
-    // Сначала удаляем все добавленные ранее классы
     allItems.forEach(item => {
         item.classList.remove('m-3-line', 'm-2-line', 'm-1-line', 'm-center', 'm-l-col', 'm-r-col');
     });
 
-    // Определяем четное или нечетное количество элементов
     if (allItems.length % 2 !== 0) {
         container.classList.remove('m-even');
         container.classList.add('m-odd');
-
-        // Устанавливаем классы в зависимости от количества элементов
         if (allItems.length === 7) {
             allItems[0].classList.add('m-3-line', 'm-l-col');
             allItems[6].classList.add('m-3-line', 'm-r-col');
@@ -169,14 +162,17 @@ document.addEventListener('DOMContentLoaded', function() {
       }
   }
 
-
-
-  
   function checkMaxCharms(counter, maxItems, notice) {
     if (counter >= maxItems) {
       notice.classList.remove('hidden');
     } else {
       notice.classList.add('hidden');
+    }
+
+    if (counter >= 2) {
+      tipsForDrugAndDrop.classList.add('m-showed');
+    } else {
+      tipsForDrugAndDrop.classList.remove('m-showed');
     }
   }
 

@@ -41,12 +41,9 @@
   }
 
   .b-chain .swiper-slide > img {
-     /* position: absolute; {% endcomment %} */
     display: block;
     width: 100%;
     margin-top: -50%;
-     /* height: 100%; {% endcomment %} */
-     /* min-width: 600px; {% endcomment %} */
     object-fit: cover;
     object-position: bottom;
   }
@@ -103,16 +100,6 @@
     background-color: #ddb65a;
     border: 1px solid #ffffff;
     box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.99);
-  }
-
-  .b-charm__list {
-    /* display: flex;
-    justify-content: center;
-    overflow-x: auto;
-    padding-top: var(--padding-top-chars-item);
-    gap: 10px;
-    scrollbar-color: #cccccc #f5f5f5;
-    scrollbar-width: thin; */
   }
 
   .b-charm__list::-webkit-scrollbar-track {
@@ -176,27 +163,6 @@
     padding: 0;
   }
 
-  /* .b-charm__list-item input[type='checkbox'] {
-    visibility: hidden;
-    width: 0;
-    height: 0;
-    position: absolute;
-  } */
-
-  /* .b-charm__list-item input[type='checkbox']:checked + img {
-    pointer-events: none;
-    opacity: 0.5;
-    transform: translateY(-10px);
-  } */
-
-  /* .b-charm__list-item label {
-    display: block;
-    position: relative;
-    cursor: pointer;
-    width: var(--width-chars-item);
-    height: var(--height-chars-item);
-  } */
-
   .b-charm__list-item_img {
     position: absolute;
     left: 0;
@@ -227,6 +193,29 @@
 
   .b-charms-notice.hidden + .b-charms-notice {
     bottom: 10px;
+  }
+
+  .b-tip_druganddrop {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 65%;
+    background-color: #ffffff;
+    color: black;
+    font-size: 14px;
+    line-height: 1.2em;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    text-align: center;
+    width: 200px;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .b-tip_druganddrop.m-showed {
+    opacity: 1;
+    visibility: visible;
   }
 
   .b-charms_presentation {
