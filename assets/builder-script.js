@@ -20,15 +20,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const maxCharms = 8; // Maximum number of charms
 
   const sortable = new Sortable(charmsList, {
-      animation: 150, // Анимация перемещения
-      ghostClass: 'sortable-ghost', // Класс для элемента-призрака
-      swap: true, // Включить режим swap
-      swapClass: 'sortable-swap-highlight', // Класс для выделения при наведении
-      swapThreshold: 0.65, // Порог срабатывания обмена
+      animation: 250,
+      ghostClass: 'sortable-ghost',
+      swap: true,
+      swapClass: 'sortable-swap-highlight',
+      swapThreshold: 0.65,
       onEnd: function () {
-          // Опционально: действия после окончания перетаскивания
-          console.log('Позиции обновлены');
-          updateClasses(charmsList, maxCharms); // Обновляем классы после изменения порядка
+          console.log('Position updated');
+          updateClasses(charmsList, maxCharms);
       },
   });
 
