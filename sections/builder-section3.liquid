@@ -248,18 +248,18 @@
   document.addEventListener('DOMContentLoaded', function() {
    ///////////////////////////////////////////////////////////////////////////
    /// Первій пример
-   const container = document.querySelector('.row-container');
-    const addItemButton = document.querySelector('.row-container_add-item');
+  const container = document.querySelector('.row-container');
+  const addItemButton = document.querySelector('.row-container_add-item');
 
-    addItemButton.addEventListener('click', function() {
-    const newItem = document.createElement('div');
-    newItem.classList.add('row-item');
-    newItem.textContent = container.querySelectorAll('.row-item').length + 1;
-    container.appendChild(newItem);
+  addItemButton.addEventListener('click', function() {
+  const newItem = document.createElement('div');
+  newItem.classList.add('row-item');
+  newItem.textContent = container.querySelectorAll('.row-item').length + 1;
+  container.appendChild(newItem);
     updateClasses(); // Обновляем классы после добавления
-});
+  });
 
-function updateClasses() {
+  function updateClasses() {
     let allItems = container.querySelectorAll('.row-item'); // Обновляем список элементов
     console.log(allItems);
 
@@ -336,35 +336,35 @@ function updateClasses() {
             allItems[0].classList.add('m-center', 'm-l-col');
             allItems[1].classList.add('m-center', 'm-r-col');
         }
-    }
-}
+      }
+  }
 
-const sortable = new Sortable(container, {
-    animation: 150, // Анимация перемещения
-    ghostClass: 'sortable-ghost', // Класс для элемента-призрака
-    swap: true, // Включить режим swap
-    swapClass: 'sortable-swap-highlight', // Класс для выделения при наведении
-    swapThreshold: 0.65, // Порог срабатывания обмена
-    onEnd: function () {
-        // Опционально: действия после окончания перетаскивания
-        console.log('Позиции обновлены');
-        updateClasses(); // Обновляем классы после изменения порядка
-    },
-});
+  const sortable = new Sortable(container, {
+      animation: 150, // Анимация перемещения
+      ghostClass: 'sortable-ghost', // Класс для элемента-призрака
+      swap: true, // Включить режим swap
+      swapClass: 'sortable-swap-highlight', // Класс для выделения при наведении
+      swapThreshold: 0.65, // Порог срабатывания обмена
+      onEnd: function () {
+          // Опционально: действия после окончания перетаскивания
+          console.log('Позиции обновлены');
+          updateClasses(); // Обновляем классы после изменения порядка
+      },
+  });
 
-// Пример функции удаления элемента
-container.addEventListener('click', function (event) {
-    if (event.target.classList.contains('row-item')) {
-        const itemToRemove = event.target;
+  // Пример функции удаления элемента
+  container.addEventListener('click', function (event) {
+      if (event.target.classList.contains('row-item')) {
+          const itemToRemove = event.target;
 
-        // Удаляем элемент
-        itemToRemove.remove();
-        updateClasses(); // Обновляем классы после удаления
-        console.log(`Элемент с номером ${itemToRemove.textContent} удален`);
-    }
-});
+          // Удаляем элемент
+          itemToRemove.remove();
+          updateClasses(); // Обновляем классы после удаления
+          console.log(`Элемент с номером ${itemToRemove.textContent} удален`);
+      }
+  });
 
-updateClasses();
+  updateClasses();
 
 
     ///////////////////////////////////////////////////////////////////////////////
