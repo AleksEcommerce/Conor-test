@@ -1,12 +1,12 @@
   /* For one */
-  .b-charms_presentation .b-charms_presentation--item:nth-child(1),
+  /* .b-charms_presentation .b-charms_presentation--item:nth-child(1),
   .b-charms_presentation.m-1 .b-charms_presentation--item:nth-child(1) {
     transform: translateY(0) translateX(-50%) rotate(0);
     left: 50%;
   }
 
    /* For two */
-  .b-charms_presentation.m-2 .b-charms_presentation--item:nth-child(1) {
+  /* .b-charms_presentation.m-2 .b-charms_presentation--item:nth-child(1) {
     transform: translateY(-2px) translateX(-90%) rotate(1deg);
     left: 50%;
   }
@@ -14,10 +14,10 @@
   .b-charms_presentation.m-2 .b-charms_presentation--item:nth-child(2) {
     transform: translateY(-2px) translateX(-30%) rotate(-1deg);
     left: 50%;
-  }
+  } */
 
 /* For Three */
-  .b-charms_presentation.m-3 .b-charms_presentation--item:nth-child(1) {
+  /* .b-charms_presentation.m-3 .b-charms_presentation--item:nth-child(1) {
     transform: translateY(-8px) translateX(-120%) rotate(6deg);
     left: 50%;
   }
@@ -30,10 +30,10 @@
   .b-charms_presentation.m-3 .b-charms_presentation--item:nth-child(3) {
     transform: translateY(-8px) translateX(10%) rotate(-6deg);
     left: 50%;
-  }
+  } */
 
 /* For Fourth  */
-  .b-charms_presentation.m-4 .b-charms_presentation--item:nth-child(1) {
+  /* .b-charms_presentation.m-4 .b-charms_presentation--item:nth-child(1) {
     transform: translateY(-14px) translateX(-150%) rotate(6deg);
     left: 50%;
   }
@@ -51,7 +51,7 @@
   .b-charms_presentation.m-4 .b-charms_presentation--item:nth-child(4) {
     transform: translateY(-14px) translateX(45%) rotate(-6deg);
     left: 50%;
-  }
+  } */
 
   /* @keyframes sway-right {
     0% {
@@ -85,3 +85,57 @@
       left: 50%;
     }
   }  */
+
+  .sortable-ghost {
+    opacity: 0.4; /* Полупрозрачный элемент при перетаскивании */
+  }
+  
+  .sortable-swap-highlight {
+    border: 2px dashed #FF6347; /* Показать границу при наведении */
+  }
+
+  .b-charms_presentation .b-charms_presentation--item.m-1-line {
+    margin-top: -7px;
+  }
+  .b-charms_presentation .b-charms_presentation--item.m-1-line.m-l-col {
+    transform: translateX(-30px) !important;
+  }
+  .b-charms_presentation .b-charms_presentation--item.m-1-line.m-r-col {
+    transform: translateX(30px) !important;
+  }
+  
+  
+  .b-charms_presentation .b-charms_presentation--item.m-2-line {
+    margin-top: -18px;
+  }
+  .b-charms_presentation .b-charms_presentation--item.m-2-line.m-l-col {
+    transform: translateX(-60px) !important;
+  }
+  .b-charms_presentation .b-charms_presentation--item.m-2-line.m-r-col {
+    transform: translateX(60px) !important;
+  }
+  
+  
+  .b-charms_presentation .b-charms_presentation--item.m-3-line {
+    margin-top: -42px;
+  }
+  .b-charms_presentation .b-charms_presentation--item.m-3-line.m-l-col {
+    transform: translateX(-90px) !important;
+  }
+  .b-charms_presentation .b-charms_presentation--item.m-3-line.m-r-col {
+    transform: translateX(90px) !important;
+  }
+  
+  
+  .b-charms_presentation.m-even .b-charms_presentation--item.m-center.m-l-col {
+    margin-top: 0;
+    transform: translateX(-15px) !important;
+  }
+  .b-charms_presentation.m-even .b-charms_presentation--item.m-center.m-r-col {
+    margin-top: 0;
+    transform: translateX(15px) !important;
+  }
+  .b-charms_presentation.m-odd .b-charms_presentation--item.m-center {
+    margin-top: 0;
+    transform: translateX(0) !important;
+  }

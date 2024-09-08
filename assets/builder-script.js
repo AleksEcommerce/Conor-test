@@ -19,6 +19,19 @@ document.addEventListener('DOMContentLoaded', function() {
   let counterCharms = 0; // Counter for selected charms
   const maxCharms = 8; // Maximum number of charms
 
+  const sortable = new Sortable(charmsList, {
+      animation: 150, // Анимация перемещения
+      ghostClass: 'sortable-ghost', // Класс для элемента-призрака
+      swap: true, // Включить режим swap
+      swapClass: 'sortable-swap-highlight', // Класс для выделения при наведении
+      swapThreshold: 0.65, // Порог срабатывания обмена
+      onEnd: function () {
+          // Опционально: действия после окончания перетаскивания
+          console.log('Позиции обновлены');
+          updateClasses(charmsList, maxCharms); // Обновляем классы после изменения порядка
+      },
+  });
+
   charmsCheckboxes.forEach((checkbox, index) => {
     checkbox.addEventListener('click', function() {
       const isDuplicate = checkDublicateProducts(this.getAttribute('data-product-id'));
@@ -29,7 +42,8 @@ document.addEventListener('DOMContentLoaded', function() {
         calcCartTotal();
         counterCharms++; 
         // maxSpacers = counterCharms - 1;
-        updateCharmListClass(charmsList, maxCharms);
+        // updateCharmListClass(charmsList, maxCharms);
+        updateClasses(charmsList, maxCharms);
       }
       checkMaxCharms(counterCharms, maxCharms, noticeCharms); 
     });
@@ -44,7 +58,8 @@ document.addEventListener('DOMContentLoaded', function() {
         calcCartTotal();
         counterCharms++; 
         // maxSpacers = counterCharms - 1;
-        updateCharmListClass(charmsList, maxCharms);
+        // updateCharmListClass(charmsList, maxCharms);
+        updateClasses(charmsList, maxCharms);
       }
       checkMaxCharms(counterCharms, maxCharms, noticeCharms);
     });
@@ -73,6 +88,90 @@ document.addEventListener('DOMContentLoaded', function() {
         presentationDiv.classList.add(`m-${selectedProducts}`);
     }
   }
+
+  function updateClasses(container, maxItems) {
+    let allItems = Array.from(container.children); // Обновляем список элементов
+    const selectedProducts = container.children.length;
+    console.log(allItems);
+
+    // Сначала удаляем все добавленные ранее классы
+    allItems.forEach(item => {
+        item.classList.remove('m-3-line', 'm-2-line', 'm-1-line', 'm-center', 'm-l-col', 'm-r-col');
+    });
+
+    // Определяем четное или нечетное количество элементов
+    if (allItems.length % 2 !== 0) {
+        container.classList.remove('m-even');
+        container.classList.add('m-odd');
+
+        // Устанавливаем классы в зависимости от количества элементов
+        if (allItems.length === 7) {
+            allItems[0].classList.add('m-3-line', 'm-l-col');
+            allItems[6].classList.add('m-3-line', 'm-r-col');
+
+            allItems[1].classList.add('m-2-line', 'm-l-col');
+            allItems[5].classList.add('m-2-line', 'm-r-col');
+
+            allItems[2].classList.add('m-1-line', 'm-l-col');
+            allItems[4].classList.add('m-1-line', 'm-r-col');
+
+            allItems[3].classList.add('m-center');
+        } else if (allItems.length === 5) {
+            allItems[0].classList.add('m-2-line', 'm-l-col');
+            allItems[4].classList.add('m-2-line', 'm-r-col');
+
+            allItems[1].classList.add('m-1-line', 'm-l-col');
+            allItems[3].classList.add('m-1-line', 'm-r-col');
+
+            allItems[2].classList.add('m-center');
+        } else if (allItems.length === 3) {
+            allItems[0].classList.add('m-1-line', 'm-l-col');
+            allItems[2].classList.add('m-1-line', 'm-r-col');
+
+            allItems[1].classList.add('m-center');
+        } else if (allItems.length === 1) {
+            allItems[0].classList.add('m-center');
+        }
+    } else {
+        container.classList.remove('m-odd');
+        container.classList.add('m-even');
+
+        if (allItems.length === 8) {
+            allItems[0].classList.add('m-3-line', 'm-l-col');
+            allItems[7].classList.add('m-3-line', 'm-r-col');
+
+            allItems[1].classList.add('m-2-line', 'm-l-col');
+            allItems[6].classList.add('m-2-line', 'm-r-col');
+
+            allItems[2].classList.add('m-1-line', 'm-l-col');
+            allItems[5].classList.add('m-1-line', 'm-r-col');
+
+            allItems[3].classList.add('m-center', 'm-l-col');
+            allItems[4].classList.add('m-center', 'm-r-col');
+        } else if (allItems.length === 6) {
+            allItems[0].classList.add('m-2-line', 'm-l-col');
+            allItems[5].classList.add('m-2-line', 'm-r-col');
+
+            allItems[1].classList.add('m-1-line', 'm-l-col');
+            allItems[4].classList.add('m-1-line', 'm-r-col');
+
+            allItems[2].classList.add('m-center', 'm-l-col');
+            allItems[3].classList.add('m-center', 'm-r-col');
+        } else if (allItems.length === 4) {
+            allItems[0].classList.add('m-1-line', 'm-l-col');
+            allItems[3].classList.add('m-1-line', 'm-r-col');
+
+            allItems[1].classList.add('m-center', 'm-l-col');
+            allItems[2].classList.add('m-center', 'm-r-col');
+        } else if (allItems.length === 2) {
+            allItems[0].classList.add('m-center', 'm-l-col');
+            allItems[1].classList.add('m-center', 'm-r-col');
+        }
+      }
+  }
+
+
+
   
   function checkMaxCharms(counter, maxItems, notice) {
     if (counter >= maxItems) {
@@ -279,7 +378,8 @@ document.addEventListener('DOMContentLoaded', function() {
           
           setTimeout(() => {
             charmToRemove.remove();
-            updateCharmListClass(charmsList, maxCharms);
+            // updateCharmListClass(charmsList, maxCharms);
+            updateClasses(charmsList, maxCharms);
             checkMaxCharms(counterCharms, maxCharms, noticeCharms); 
           }, 300);
         }
