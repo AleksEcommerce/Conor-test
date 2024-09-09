@@ -13,6 +13,8 @@
 <script src="{{ 'builder-tabs.js' | asset_url }}" defer></script>
 
 <section id='builder-container' class='l-builder'>
+  <div id='builder-modal' class="b-tips_help-modal"></div>
+  <span id='builder-modal_btn' class="b-tips_help">{{ section.settings.step_how_to_use }}</span>
   <article class="l-builder-picture">
     <div class="b-chain" id="pendant-builder-container">
       <div class="swiper-container">
@@ -29,7 +31,7 @@
           {% endfor %}
         </div>
         <div id="charms_presentation" class="b-charms_presentation"></div>
-        <div id="druganddrop" class="b-tip_druganddrop"> {{ section.settings.step_2_tip }} </div>
+        <div id="draganddrop" class="b-tip_draganddrop"> {{ section.settings.step_2_tip }} </div>
         <div class="swiper-button-next b-chain_nav-btn m-next">
           
         </div>
@@ -237,6 +239,22 @@
   "settings": [
     {
       "type": "header",
+      "content": "Main Settings"
+    },
+    {
+      "type": "text",
+      "id": "step_2_tip",
+      "label": "Tooltip For Drag and Drop", 
+      "default": "Move products using drag and drop"
+    },
+    {
+      "type": "text",
+      "id": "step_how_to_use",
+      "label": "Text How to use", 
+      "default": "How to Use?"
+    },
+    {
+      "type": "header",
       "content": "Step 1: Select a Chain"
     },
     {
@@ -256,12 +274,6 @@
       "label": "Select Products",
       "info": "Choose the products to display in the scrollbar.",
       "limit": 15
-    },
-    {
-      "type": "text",
-      "id": "step_2_tip",
-      "label": "tip for drag and drop",
-      "default": "Move products using drag and drop"
     },
     {
       "type": "header",

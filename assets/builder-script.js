@@ -2,6 +2,12 @@ document.addEventListener('DOMContentLoaded', function() {
   // Main container
   const mainContainer = document.getElementById('builder-container');
 
+  // Tabs
+
+  // Modal
+  const modalBuilder = document.getElementById('builder-modal');
+  const modalBtn = document.getElementById('builder-modal_btn');
+
   // Builder Cart
   const cartTotal = document.getElementById('builder-cart-total');
   const cartItemsNumber = document.getElementById('builder-cart-total-items');
@@ -10,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Charms and Spacers
   const noticeCharms = document.getElementById('b-notice'); // Notice for maximum number of charms
   const charmsList = document.getElementById('charms_presentation'); // Presentation for selected charms
-  const tipsForDrugAndDrop = document.getElementById('druganddrop'); // Tips for drug and drop
+  const tipsForDragAndDrop = document.getElementById('draganddrop'); // Tips for drag and drop
 
   const swiperPaginationThumbs = document.querySelectorAll('.swiper-pagination-thumb'); // Button for selecting charms
 
@@ -173,9 +179,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (counter >= 2) {
-      tipsForDrugAndDrop.classList.add('m-showed');
+      tipsForDragAndDrop.classList.add('m-showed');
     } else {
-      tipsForDrugAndDrop.classList.remove('m-showed');
+      tipsForDragAndDrop.classList.remove('m-showed');
     }
   }
 
@@ -409,6 +415,45 @@ document.addEventListener('DOMContentLoaded', function() {
           qtyProductItem.remove();
         }
       }
+    }
+  });
+
+  function showModal() {
+    const modal = document.getElementById('builder-modal');
+    modal.style.display = 'block';
+    setTimeout(() => {
+      modal.classList.add('m-showed');
+    }, 50);
+
+
+    const modalContent = document.createElement('div');
+    modalContent.classList.add('b-modal-content');
+    modalContent.innerHTML = `
+      <div class="b-modal-content__inner">
+        <div class="b-modal-content__header">
+          <h2 class="b-modal-content__title">Select</h2>
+          <button id="builder-modal_close" class="b-modal-content__close">
+            <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.5 4.547 11.453 3.5 8 6.953 4.547 3.5 3.5 4.547 6.953 8 3.5 11.453 4.547 12.5 8 9.047l3.453 3.453 1.047-1.047L9.047 8 12.5 4.547z" fill="#010101"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    `
+    modal.appendChild(modalContent);
+    // const modalClose = document.getElementById('builder-modal_close');
+  }
+
+  modalBtn.addEventListener('click', function(event) {
+    showModal();
+  });
+
+  modalBuilder.addEventListener('click', function(event) {
+    if (event.target === modalBuilder) {
+      modalBuilder.classList.remove('m-showed');
+      setTimeout(() => {
+        modalBuilder.style.display = 'none';
+      }, 300);
     }
   });
 
