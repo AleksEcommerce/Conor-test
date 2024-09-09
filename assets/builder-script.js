@@ -294,18 +294,26 @@ document.addEventListener('DOMContentLoaded', function() {
           const qtyText = product.qty > 1 ? `<span class="b-builder__cart-list_item-qty">QTY: ${product.qty}</span>` : '';
           listItem.setAttribute('data-product-qty', product.qty);
           listItem.innerHTML = `
-              <span class="b-builder__cart-list_item-title">${product.title}</span>
-              <span class="b-builder__cart-list_item-price">${product.price}</span>
-              ${qtyText}
-              <span class="b-builder__cart-list_item-remove" data-product-id="${product.id}">
-                <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12.5 4.547 11.453 3.5 8 6.953 4.547 3.5 3.5 4.547 6.953 8 3.5 11.453 4.547 12.5 8 9.047l3.453 3.453 1.047-1.047L9.047 8 12.5 4.547z" fill="#010101"></path>
-                </svg>
-              </span>
+              <div class="b-builder__cart-list_item-inner">
+                <span class="b-builder__cart-list_item-title">${product.title}</span>
+                <span class="b-builder__cart-list_item-price">${product.price}</span>
+                ${qtyText}
+                <span class="b-builder__cart-list_item-remove" data-product-id="${product.id}">
+                  <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.5 4.547 11.453 3.5 8 6.953 4.547 3.5 3.5 4.547 6.953 8 3.5 11.453 4.547 12.5 8 9.047l3.453 3.453 1.047-1.047L9.047 8 12.5 4.547z" fill="#010101"></path>
+                  </svg>
+                </span>
+              </div>
           `;
+          setTimeout(() => {
+            listItem.classList.add('m-added');
+        }, 400);
       } else {
-          listItem.remove();
-      }
+          listItem.classList.remove('m-added');
+          setTimeout(() => {
+            listItem.remove();
+        }, 400);
+      } 
     }
   }
 
@@ -315,6 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
     listItem.setAttribute('data-product-id', product.id);
     listItem.setAttribute('data-product-qty', product.qty);
     listItem.innerHTML = `
+      <div class="b-builder__cart-list_item-inner">
         <span class="b-builder__cart-list_item-title">${product.title}</span>
         <span class="b-builder__cart-list_item-price">${product.price}</span>
         <span class="b-builder__cart-list_item-remove" data-product-id="${product.id}">
@@ -322,11 +331,18 @@ document.addEventListener('DOMContentLoaded', function() {
             <path d="M12.5 4.547 11.453 3.5 8 6.953 4.547 3.5 3.5 4.547 6.953 8 3.5 11.453 4.547 12.5 8 9.047l3.453 3.453 1.047-1.047L9.047 8 12.5 4.547z" fill="#010101"></path>
           </svg>
         </span>
+      </div>
     `;
     if (builderCartList.children.length > 0 && index === 0) {
       builderCartList.replaceChild(listItem, builderCartList.children[0]);
+      setTimeout(() => {
+        listItem.classList.add('m-added');
+      }, 400);
     } else {
         builderCartList.appendChild(listItem);
+        setTimeout(() => {
+            listItem.classList.add('m-added');
+        }, 400);
     }
   }
 
@@ -389,6 +405,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
           removeProductFromCartStorage(productId);
           calcCartTotal(); 
+          qtyProductItem.classList.remove('m-added');
           qtyProductItem.remove();
         }
       }
