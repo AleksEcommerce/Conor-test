@@ -115,13 +115,13 @@
     margin-top: -10px;
   }
   .b-charms_presentation.m-even .b-charms_presentation--item.m-1-line.m-l-col {
-    transform: translateX(-40px) !important;
+    transform: translateX(-43px) !important;
   }
   .b-charms_presentation.m-even .b-charms_presentation--item.m-1-line.m-r-col {
-    transform: translateX(40px) !important;
+    transform: translateX(43px) !important;
   }
   
-  .b-charms_presentation.m-even .b-charms_presentation--item.m-2-line {
+  .b-charms_presentation.m-even .b-charms_presentation--item.m-2-line { 
     margin-top: -26px;
   }
   .b-charms_presentation.m-even .b-charms_presentation--item.m-2-line.m-l-col {
