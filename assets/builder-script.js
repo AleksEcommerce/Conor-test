@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     if (allItems.length % 2 !== 0) {
-        container.classList.remove('m-even');
+        container.classList.remove('m-even', 'm-single');
         container.classList.add('m-odd');
         if (allItems.length === 7) {
             allItems[0].classList.add('m-3-line', 'm-l-col');
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
             allItems[0].classList.add('m-center');
         }
     } else {
-        container.classList.remove('m-odd');
+        container.classList.remove('m-odd', 'm-single');
         container.classList.add('m-even');
 
         if (allItems.length === 8) {
@@ -159,6 +159,9 @@ document.addEventListener('DOMContentLoaded', function() {
             allItems[0].classList.add('m-center', 'm-l-col');
             allItems[1].classList.add('m-center', 'm-r-col');
         }
+      }
+      if (allItems.length === 1) {
+        container.classList.add('m-single');
       }
   }
 

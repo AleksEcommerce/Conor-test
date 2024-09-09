@@ -312,6 +312,10 @@
   margin: 0;
   max-height: 250px;
   overflow-y: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .b-builder__cart-list::-webkit-scrollbar {
@@ -337,7 +341,7 @@
   transition: all 0.4s ease;
   text-transform: uppercase;
   line-height: 1.2em;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 
 .b-builder__cart-list .b-builder__cart-list_item:first-child .b-builder__cart-list_item-remove {
