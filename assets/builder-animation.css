@@ -142,3 +142,15 @@
     transform: translateX(100px) !important;
   }
   
+
+  @media screen and (max-width: 767px) {
+    .b-charms_presentation .sortable-chosen.b-charms_presentation--item .b-charms_presentation--item_img {
+      outline: none;
+      border-radius: 10px;
+    }
+  
+    .b-charms_presentation .sortable-swap-highlight.b-charms_presentation--item .b-charms_presentation--item_img {
+      outline: none;
+      border-radius: 10px;
+    }
+  }
